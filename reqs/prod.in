@@ -1,0 +1,3 @@
+-r common.base
+
+gunicorn>=20.0.4,<20.1
