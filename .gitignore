@@ -134,3 +134,7 @@ dmypy.json
 
 # Project-level ignore
 .env
+
+# PyCharm
+.idea/
+
