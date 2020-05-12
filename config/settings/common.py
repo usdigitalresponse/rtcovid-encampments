@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "apps.reporting",
     "apps.scheduling",
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
