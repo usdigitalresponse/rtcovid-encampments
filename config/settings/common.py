@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from pathlib import Path
 import dj_database_url
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Build paths inside the project like this: BASE_DIR / 'static' / 'css'
+BASE_DIR = Path(__file__).parent.parent.parent
+print(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -61,7 +63,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [
+            BASE_DIR / 'templates',
+        ],
         "APP_DIRS": True,
 
         "OPTIONS": {
@@ -88,7 +92,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config(default="postgis://postgres@db/postgres")
+    "default": dj_database_url.config(
+        default="postgis://postgres@db/postgres",
+        engine="django.contrib.gis.db.backends.postgis",  # Force postgis
+    )
 }
 
 
@@ -118,4 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / 'static',]
+STATIC_ROOT = BASE_DIR / 'static_root'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'

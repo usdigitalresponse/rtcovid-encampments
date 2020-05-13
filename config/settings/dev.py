@@ -5,4 +5,12 @@ Settings overrides for development.
 
 from .common import *  # noqa: F401,F403
 
-string_if_invalid = '%s'
+INSTALLED_APPS += [
+    "django_extensions",
+]
+
+
+try:
+    from config.settings.local import *
+except ImportError:
+    pass

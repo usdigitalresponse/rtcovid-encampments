@@ -1,0 +1,10 @@
+{
+  "name": "encampments",
+  "description": "Encampment tracker, originally for the City of Oakland",
+  "repository": "https://github.com/RTCovid/encampments",
+  "scripts": {
+    "dokku": {
+      "predeploy": "python manage.py migrate && python manage.py collectstatic --noinput"
+    }
+  }
+}
