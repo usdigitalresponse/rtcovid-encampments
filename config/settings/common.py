@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
-    "django_extensions",
     "apps.reporting",
     "apps.scheduling",
     'rest_framework',
