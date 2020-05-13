@@ -6,7 +6,7 @@ from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
     path("admax/", admin.site.urls),
-    path("report/", include("apps.reporting.urls")),
+    path("", include("apps.reporting.urls")),
     url(r'^api-auth/', include('rest_framework.urls')),
     path('openapi', get_schema_view(
         title="Your Project",

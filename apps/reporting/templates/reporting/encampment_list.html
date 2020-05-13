@@ -1,0 +1,10 @@
+{% extends "reporting/reporting_base.html" %}
+
+{% block content %}
+    <h2>Encampments</h2>
+    <ul>
+        {% for encampment in object_list %}
+            <li><a href="{% url 'report-list' encampment.id %}">{{ encampment.name }} @ {{ encampment.canonical_location }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

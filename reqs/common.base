@@ -4,3 +4,4 @@ pip-tools>=5.1.2,<5.2
 psycopg2-binary>=2.8,<2.9
 djangorestframework==3.11.0
 django-extra-fields==2.0.5
+django-filter==2.2.0
