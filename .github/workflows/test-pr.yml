@@ -1,0 +1,29 @@
+name: PR Builder
+on: push
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: set PY
+        run: echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' ' -f1)"
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
+      - uses: pre-commit/action@v1.0.1
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the images
+        run: docker-compose build
+      - name: start everything
+        run: docker-compose up -d && sleep 20
+      - name: Test
+        # docker exec because you can't disable the tty with docker-compose exec
+        run: docker exec encampments_web_1 python manage.py test

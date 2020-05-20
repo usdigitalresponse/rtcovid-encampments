@@ -13,3 +13,7 @@ docker-compose up web
 1. Add the dependency to `common.base`, `dev.in` or `prod.in`
 2. Run `pip-compile --no-annotate reqs/dev.in`
 2. Run `pip-compile --no-annotate reqs/prod.in`
+
+## Setup Precommit Hooks
+1. `pip install pre-commit`
+2. `pre-commit install`
