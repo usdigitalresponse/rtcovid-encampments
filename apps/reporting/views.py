@@ -1,33 +1,44 @@
-from django.views.generic import ListView, CreateView
+from django.views.generic import CreateView
+from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
-from apps.reporting.models import Organization, Encampment, Report
-from apps.reporting.serializers import ReportSerializer, OrganizationSerializer, EncampmentSerializer
+from apps.reporting.models import Encampment
+from apps.reporting.models import Organization
+from apps.reporting.models import Report
+from apps.reporting.serializers import EncampmentSerializer
+from apps.reporting.serializers import OrganizationSerializer
+from apps.reporting.serializers import ReportSerializer
 
 
 class EncampmentListView(ListView):
     model = Encampment
+
 
 # TODO: admin permissions
 class EncampmentCreateView(CreateView):
     model = Encampment
     fields = ["name", "locations_geom"]
 
+
 class ReportListView(ListView):
     model = Report
+
     def get_queryset(self):
-        return Report.objects.filter(encampment=self.kwargs['encampment']).order_by('-date')
+        return Report.objects.filter(encampment=self.kwargs["encampment"]).order_by(
+            "-date"
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['encampment'] = Encampment.objects.get(id=self.kwargs['encampment'])
+        context["encampment"] = Encampment.objects.get(id=self.kwargs["encampment"])
         return context
 
 
 class OrganizationCreateView(CreateView):
     model = Organization
     fields = ["name"]
+
 
 class ReportCreateView(CreateView):
     model = Report
@@ -53,12 +64,14 @@ class ReportViewSet(viewsets.ModelViewSet):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['encampment']
-    ordering = ('date')
+    filterset_fields = ["encampment"]
+    ordering = "date"
+
 
 class OrganizationViewSet(viewsets.ModelViewSet):
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
+
 
 class EncampmentViewSet(viewsets.ModelViewSet):
     queryset = Encampment.objects.all()
