@@ -29,15 +29,18 @@ class Region(BaseModel):
 
 class Encampment(BaseModel):
     name = models.TextField()
-    canonical_location = PointField(srid=4326)
+    location = models.TextField()
+    location_geom = PointField(srid=4326)
     region = models.ForeignKey('Region', null=True, on_delete=models.PROTECT)
 
     def get_absolute_url(self):
         return reverse('encampment-list')
 
     def save(self, *args, **kwargs):
+        if not self.location_geom:
+            # geocode
         if not self.region:
-            self.region = Region.get_for_point(self.canonical_location)
+            self.region = Region.get_for_point(self.location_geom)
         super().save(*args, **kwargs)
     
     def __str__(self):

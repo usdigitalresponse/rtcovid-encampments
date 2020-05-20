@@ -26,13 +26,15 @@ class TestModels(TestCase):
         
         e1 = app_models.Encampment.objects.create(
             name="Test encampment",
-            canonical_location=Point(-122.2245076, 37.7777988),
+            location='',
+            location_geom=Point(-122.2245076, 37.7777988),
         )
         self.assertEqual(e1.region.name, "District 5")
 
         with self.assertRaises(app_models.Region.DoesNotExist):
             e2 = app_models.Encampment.objects.create(
                 name="Test encampment",
-                canonical_location=Point(-122.44994547, 37.76389937),
+                location='',
+                location_geom=Point(-122.44994547, 37.76389937),
             )
 
