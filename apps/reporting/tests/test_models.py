@@ -1,5 +1,3 @@
-import unittest
-
 from django.contrib.gis.geos import Point
 from django.core.management import call_command
 from django.test import TestCase

@@ -1,13 +1,9 @@
-import json
-
 import requests
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.geos import MultiPolygon
 from django.core.management.base import BaseCommand
-from django.core.management.base import CommandError
 
 from apps.reporting.models import Region
-
 
 OAK_COUNCILS_DATA_URL = (
     "http://data.openoakland.org/sites/default/files/OakCCD2013.json"

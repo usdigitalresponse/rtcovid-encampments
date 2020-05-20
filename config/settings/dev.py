@@ -10,6 +10,6 @@ INSTALLED_APPS += [
 
 
 try:
-    from config.settings.local import *
+    from config.settings.local import *  # noqa: F401
 except ImportError:
     pass
