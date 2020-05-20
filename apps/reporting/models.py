@@ -1,6 +1,6 @@
 import uuid
 
-from django.contrib.gis.db.models import PointField
+from django.contrib.gis.db.models import PointField, MultiPolygonField
 from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse
@@ -15,18 +15,43 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class Region(BaseModel):
+    name = models.CharField(max_length=50)
+    geom = MultiPolygonField(srid=4326)
+
+    @classmethod
+    def get_for_point(cls, pt):
+        return cls.objects.get(geom__contains=pt)
+
+    def __str__(self):
+        return self.name
+
+
 class Encampment(BaseModel):
     name = models.TextField()
     canonical_location = PointField(srid=4326)
+    region = models.ForeignKey('Region', null=True, on_delete=models.PROTECT)
+
     def get_absolute_url(self):
         return reverse('encampment-list')
+
+    def save(self, *args, **kwargs):
+        if not self.region:
+            self.region = Region.get_for_point(self.canonical_location)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
 
 class Organization(BaseModel):
     name = models.TextField()
 
+
 class ScheduledVisit(BaseModel):
     encampment = models.ForeignKey(Encampment, on_delete=models.CASCADE)
     date = models.DateField()
+
 
 class Report(BaseModel):
     encampment = models.ForeignKey(Encampment, on_delete=models.CASCADE)
