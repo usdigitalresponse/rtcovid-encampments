@@ -32,8 +32,14 @@ class Region(BaseModel):
 
 
 class Encampment(BaseModel):
-    name = models.TextField(help_text="A descriptive name for the encampment, which may be based on the address.")
-    location = models.TextField(help_text="An intersection or address. Adding a city/state can help accuracy.")
+    name = models.CharField(
+        max_length=100,
+        help_text="A descriptive name for the encampment, which may be based on the address.",
+    )
+    location = models.CharField(
+        max_length=250,
+        help_text="An intersection or address. Adding a city/state can help accuracy.",
+    )
     location_geom = PointField(srid=4326)
     region = models.ForeignKey('Region', null=True, on_delete=models.PROTECT)
 
