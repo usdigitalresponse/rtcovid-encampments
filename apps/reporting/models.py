@@ -1,9 +1,13 @@
 import uuid
 
+from django.conf import settings
 from django.contrib.gis.db.models import PointField, MultiPolygonField
+from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse
+
+import mapbox
 
 
 class BaseModel(models.Model):
@@ -28,8 +32,8 @@ class Region(BaseModel):
 
 
 class Encampment(BaseModel):
-    name = models.TextField()
-    location = models.TextField()
+    name = models.TextField(help_text="A descriptive name for the encampment, which may be based on the address.")
+    location = models.TextField(help_text="An intersection or address. Adding a city/state can help accuracy.")
     location_geom = PointField(srid=4326)
     region = models.ForeignKey('Region', null=True, on_delete=models.PROTECT)
 
@@ -39,6 +43,13 @@ class Encampment(BaseModel):
     def save(self, *args, **kwargs):
         if not self.location_geom:
             # geocode
+            geocoder = mapbox.Geocoder()
+            result = geocoder.forward(
+                self.location,
+                lon=settings.LOCAL_LONGITUDE,
+                lat=settings.LOCAL_LATITUDE,
+            ).geojson()
+            self.location_geom = GEOSGeometry(str(result["features"][0]["geometry"]))
         if not self.region:
             self.region = Region.get_for_point(self.location_geom)
         super().save(*args, **kwargs)
