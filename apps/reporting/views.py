@@ -18,7 +18,7 @@ class EncampmentListView(ListView):
 # TODO: admin permissions
 class EncampmentCreateView(CreateView):
     model = Encampment
-    fields = ["name", "canonical_location"]
+    fields = ["name", "locations_geom"]
 
 
 class ReportListView(ListView):

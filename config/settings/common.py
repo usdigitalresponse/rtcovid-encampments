@@ -123,3 +123,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "static_root"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
+
+
+# Local options
+LOCAL_CITY = "Oakland, CA"  # Used to focus geocoding requests
+LOCAL_LONGITUDE = -122.271  # Used to focus geocoding requests
+LOCAL_LATITUDE = 37.804  # Used to focus geocoding requests

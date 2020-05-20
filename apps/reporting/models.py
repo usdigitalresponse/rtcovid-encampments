@@ -1,7 +1,10 @@
 import uuid
 
+import mapbox
+from django.conf import settings
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
+from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse
@@ -29,16 +32,32 @@ class Region(BaseModel):
 
 
 class Encampment(BaseModel):
-    name = models.TextField()
-    canonical_location = PointField(srid=4326)
+    name = models.CharField(
+        max_length=100,
+        help_text="A descriptive name for the encampment, which may be based on the address.",
+    )
+    location = models.CharField(
+        max_length=250,
+        help_text="An intersection or address. Adding a city/state can help accuracy.",
+    )
+    location_geom = PointField(srid=4326)
     region = models.ForeignKey("Region", null=True, on_delete=models.PROTECT)
 
     def get_absolute_url(self):
         return reverse("encampment-list")
 
     def save(self, *args, **kwargs):
+        if not self.location_geom:
+            # geocode
+            geocoder = mapbox.Geocoder()
+            result = geocoder.forward(
+                self.location,
+                lon=settings.LOCAL_LONGITUDE,
+                lat=settings.LOCAL_LATITUDE,
+            ).geojson()
+            self.location_geom = GEOSGeometry(str(result["features"][0]["geometry"]))
         if not self.region:
-            self.region = Region.get_for_point(self.canonical_location)
+            self.region = Region.get_for_point(self.location_geom)
         super().save(*args, **kwargs)
 
     def __str__(self):
