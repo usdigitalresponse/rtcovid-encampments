@@ -2,12 +2,15 @@ from drf_extra_fields.fields import IntegerRangeField
 from drf_extra_fields.geo_fields import PointField
 from rest_framework import serializers
 
-from apps.reporting.models import Report, Organization, Encampment
+from apps.reporting.models import Encampment
+from apps.reporting.models import Organization
+from apps.reporting.models import Report
 
 
 class ReportSerializer(serializers.ModelSerializer):
     recorded_location = PointField()
     occupancy = IntegerRangeField()
+
     class Meta:
         model = Report
         fields = [
@@ -25,10 +28,12 @@ class ReportSerializer(serializers.ModelSerializer):
             "notes",
         ]
 
+
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = ["name"]
+
 
 class EncampmentSerializer(serializers.ModelSerializer):
     class Meta:

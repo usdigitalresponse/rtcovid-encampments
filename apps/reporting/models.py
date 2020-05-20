@@ -1,6 +1,7 @@
 import uuid
 
-from django.contrib.gis.db.models import PointField, MultiPolygonField
+from django.contrib.gis.db.models import MultiPolygonField
+from django.contrib.gis.db.models import PointField
 from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse
@@ -30,16 +31,16 @@ class Region(BaseModel):
 class Encampment(BaseModel):
     name = models.TextField()
     canonical_location = PointField(srid=4326)
-    region = models.ForeignKey('Region', null=True, on_delete=models.PROTECT)
+    region = models.ForeignKey("Region", null=True, on_delete=models.PROTECT)
 
     def get_absolute_url(self):
-        return reverse('encampment-list')
+        return reverse("encampment-list")
 
     def save(self, *args, **kwargs):
         if not self.region:
             self.region = Region.get_for_point(self.canonical_location)
         super().save(*args, **kwargs)
-    
+
     def __str__(self):
         return self.name
 
@@ -72,5 +73,4 @@ class Report(BaseModel):
     notes = models.TextField(blank=True)
 
     def get_absolute_url(self):
-        return reverse('report-list', kwargs=dict(encampment=self.encampment.id))
-
+        return reverse("report-list", kwargs=dict(encampment=self.encampment.id))
