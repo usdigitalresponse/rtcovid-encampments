@@ -16,8 +16,6 @@ import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'static' / 'css'
 BASE_DIR = Path(__file__).parent.parent.parent
-print(BASE_DIR)
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
