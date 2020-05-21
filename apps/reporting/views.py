@@ -1,3 +1,4 @@
+import django_tables2 as tables
 from django.views.generic import CreateView
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,6 +14,30 @@ from apps.reporting.serializers import ReportSerializer
 
 class EncampmentListView(ListView):
     model = Encampment
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        extra_context = {
+            "not_visited_14": Encampment.not_visited_in(14).count(),
+            "visits_7": Report.last_n(7).count(),
+            "visits_31": Report.last_n(31).count(),
+            "table": EncampmentTable(self.object_list),
+        }
+        return {**context, **extra_context}
+
+
+class HybridDate(tables.Column):
+    pass
+
+
+class EncampmentTable(tables.Table):
+    name = tables.Column()
+    location = tables.Column()
+
+    last_visit = HybridDate(accessor="last_report.date")
+    next_visit = HybridDate(accessor="next_visit.date")
+
+    tasks = tables.Column(accessor="num_tasks")
 
 
 # TODO: admin permissions

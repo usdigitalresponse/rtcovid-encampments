@@ -1,13 +1,20 @@
+from datetime import date
+from datetime import timedelta
+
 from django.contrib.gis.geos import Point
 from django.core.management import call_command
 from django.test import TestCase
+from freezegun import freeze_time
 
 from apps.reporting import models as app_models
+from apps.reporting.models import Organization
+from apps.reporting.models import ScheduledVisit
 
 
 class TestModels(TestCase):
     def setUp(self):
         call_command("preload_oakland")
+        self.org = Organization.objects.create(name="test org")
 
     def test_region(self):
         points = [
@@ -37,3 +44,52 @@ class TestModels(TestCase):
                 location="",
                 location_geom=Point(-122.44994547, 37.76389937),
             )
+
+    @freeze_time("2020-05-18")
+    def test_visited_encampments(self):
+        e1 = app_models.Encampment.objects.create(
+            name="Test encampment",
+            location="",
+            location_geom=Point(-122.2245076, 37.7777988),
+        )
+        self.assertEqual(list(app_models.Encampment.not_visited_in(10)), [e1])
+
+        app_models.Report.objects.create(
+            encampment=e1,
+            performed_by=self.org,
+            date=date.today() - timedelta(days=3),
+            talked_to=10,
+            assessed=50,
+            assessed_asymptomatic=12,
+        )
+        self.assertEqual(app_models.Encampment.not_visited_in(10).count(), 0)
+        self.assertEqual(app_models.Encampment.not_visited_in(1).count(), 1)
+
+    @freeze_time("2020-05-18")
+    def test_next_visit(self):
+        e1 = app_models.Encampment.objects.create(
+            name="Test encampment",
+            location="",
+            location_geom=Point(-122.2245076, 37.7777988),
+        )
+        self.assertEqual(e1.next_visit(), None)
+        self.assertEqual(e1.last_report(), None)
+
+        scheduled_visit = ScheduledVisit.objects.create(
+            encampment=e1, date=date.today()
+        )
+        self.assertEqual(e1.next_visit(), scheduled_visit)
+        self.assertEqual(e1.last_report(), None)
+
+        report = app_models.Report.objects.create(
+            encampment=e1,
+            performed_by=self.org,
+            date=date.today(),
+            visit=scheduled_visit,
+            talked_to=10,
+            assessed=50,
+            assessed_asymptomatic=12,
+        )
+
+        self.assertEqual(e1.next_visit(), None)
+        self.assertEqual(e1.last_report(), report)

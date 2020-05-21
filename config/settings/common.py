@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.scheduling",
     "rest_framework",
     "django_filters",
+    "django_tables2",
 ]
 
 MIDDLEWARE = [

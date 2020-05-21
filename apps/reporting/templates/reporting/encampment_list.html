@@ -1,10 +1,11 @@
 {% extends "reporting/reporting_base.html" %}
+{% load render_table from django_tables2 %}
+
 
 {% block content %}
+    <p>{{ not_visited_14 }} encampments not visited in the last 14 days</p>
+    <p>{{ visits_7 }} visits in last 7 days</p>
+    <p>{{ visits_31 }} visits in last 31 days</p>
     <h2>Encampments</h2>
-    <ul>
-        {% for encampment in object_list %}
-            <li><a href="{% url 'report-list' encampment.id %}">{{ encampment.name }} @ {{ encampment.canonical_location }}</li>
-        {% endfor %}
-    </ul>
+     {% render_table table %}
 {% endblock %}
