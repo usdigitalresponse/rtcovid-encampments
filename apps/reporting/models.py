@@ -77,10 +77,7 @@ class Encampment(BaseModel):
             ).geojson()
             self.location_geom = GEOSGeometry(str(result["features"][0]["geometry"]))
         if not self.region:
-            try:
-                self.region = Region.get_for_point(self.location_geom)
-            except Region.DoesNotExist:
-                pass
+            self.region = Region.get_for_point(self.location_geom)
         super().save(*args, **kwargs)
 
     def __str__(self):
