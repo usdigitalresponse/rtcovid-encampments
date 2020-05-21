@@ -7,3 +7,4 @@ django-extra-fields>=2.0.5,<2.1
 django-filter>=2.2.0,<2.3
 requests>=2.23.0,<3
 mapbox>=0.18.0,<=0.19
+django-tables2==2.3.1
