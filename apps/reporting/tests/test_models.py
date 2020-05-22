@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.contrib.gis.geos import Point
 from django.core.management import call_command
 from django.test import TestCase
+from django.utils import timezone
 from freezegun import freeze_time
 
 from apps.reporting import models as app_models
@@ -39,7 +40,7 @@ class TestModels(TestCase):
         self.assertEqual(e1.region.name, "District 5")
 
         with self.assertRaises(app_models.Region.DoesNotExist):
-            e2 = app_models.Encampment.objects.create(
+            app_models.Encampment.objects.create(
                 name="Test encampment",
                 location="",
                 location_geom=Point(-122.44994547, 37.76389937),
@@ -93,3 +94,28 @@ class TestModels(TestCase):
 
         self.assertEqual(e1.next_visit(), None)
         self.assertEqual(e1.last_report(), report)
+
+    @freeze_time("2020-05-18")
+    def test_tasks(self):
+        e1 = app_models.Encampment.objects.create(
+            name="Test encampment",
+            location="",
+            location_geom=Point(-122.2245076, 37.7777988),
+        )
+        self.assertEqual(e1.tasks.count(), 0)
+        self.assertEqual(e1.open_tasks().count(), 0)
+
+        task = app_models.Task.objects.create(
+            title="Clean up trash",
+            details="Trash everywhere, it's a mess",
+            encampment=e1,
+        )
+
+        self.assertEqual(e1.tasks.count(), 1)
+        self.assertEqual(e1.open_tasks().count(), 1)
+
+        task.completed = timezone.now()
+        task.save()
+
+        self.assertEqual(e1.tasks.count(), 1)
+        self.assertEqual(e1.open_tasks().count(), 0)
