@@ -2,7 +2,6 @@
 Settings overrides for development.
 
 """
-
 from .common import *  # noqa: F401,F403
 
 INSTALLED_APPS += [
@@ -11,6 +10,6 @@ INSTALLED_APPS += [
 
 
 try:
-    from config.settings.local import *
+    from config.settings.local import *  # noqa: F401
 except ImportError:
     pass

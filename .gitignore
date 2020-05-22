@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# vim
+.*sw*
+
 # C extensions
 *.so
 
@@ -138,3 +141,5 @@ dmypy.json
 # PyCharm
 .idea/
 
+# Mac OS
+.DS_Store

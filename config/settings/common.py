@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
 import os
 from pathlib import Path
+
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'static' / 'css'
@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.gis",
     "apps.reporting",
     "apps.scheduling",
-    'rest_framework'
+    "rest_framework",
+    "django_filters",
+    "django_tables2",
 ]
 
 MIDDLEWARE = [
@@ -58,11 +61,10 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / 'templates',
-        ],
+        "DIRS": [BASE_DIR / "templates",],
         "APP_DIRS": True,
         "OPTIONS": {
+            "string_if_invalid": "Invalid template: `%s`",
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -73,6 +75,9 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
+}
 WSGI_APPLICATION = "config.wsgi.application"
 
 
@@ -113,7 +118,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATICFILES_DIRS = [BASE_DIR / 'static',]
-STATIC_ROOT = BASE_DIR / 'static_root'
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "static_root"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
+
+# Local options
+LOCAL_CITY = "Oakland, CA"  # Used to focus geocoding requests
+LOCAL_LONGITUDE = -122.271  # Used to focus geocoding requests
+LOCAL_LATITUDE = 37.804  # Used to focus geocoding requests
