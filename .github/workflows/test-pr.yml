@@ -27,5 +27,4 @@ jobs:
       - name: start everything
         run: docker-compose up -d && sleep 20
       - name: Test
-        # docker exec because you can't disable the tty with docker-compose exec
         run: docker-compose run web python manage.py test

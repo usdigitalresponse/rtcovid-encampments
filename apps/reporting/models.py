@@ -45,6 +45,9 @@ class Encampment(BaseModel):
     location_geom = PointField(srid=4326)
     region = models.ForeignKey("Region", null=True, on_delete=models.PROTECT)
 
+    def open_tasks(self):
+        return self.tasks.filter(completed=None)
+
     def last_report(self):
         return self.reports.order_by("-date").first()
 
@@ -64,7 +67,7 @@ class Encampment(BaseModel):
         return Encampment.objects.exclude(id__in=visited_encampments)
 
     def get_absolute_url(self):
-        return reverse("encampment-list")
+        return reverse("report-list", kwargs={"encampment": self.id})
 
     def save(self, *args, **kwargs):
         if not self.location_geom:
@@ -86,6 +89,16 @@ class Encampment(BaseModel):
 
 class Organization(BaseModel):
     name = models.TextField()
+
+
+class Task(BaseModel):
+    title = models.CharField(max_length=512)
+    details = models.TextField(blank=True)
+    encampment = models.ForeignKey(
+        Encampment, on_delete=models.CASCADE, related_name="tasks"
+    )
+
+    completed = models.DateTimeField(null=True)
 
 
 class ScheduledVisit(BaseModel):

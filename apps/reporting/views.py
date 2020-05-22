@@ -31,13 +31,13 @@ class HybridDate(tables.Column):
 
 
 class EncampmentTable(tables.Table):
-    name = tables.Column()
+    name = tables.Column(linkify=True)
     location = tables.Column()
 
     last_visit = HybridDate(accessor="last_report.date")
     next_visit = HybridDate(accessor="next_visit.date")
 
-    tasks = tables.Column(accessor="num_tasks")
+    tasks = tables.Column(accessor="open_tasks.count")
 
 
 # TODO: admin permissions
