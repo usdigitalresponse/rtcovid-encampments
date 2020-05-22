@@ -10,6 +10,12 @@
   <div class="infonugget-stat">{{ not_visited_14 }}</div>
   <div class="infonugget-description">encampments not visited<br> in the last 14 days</div>
 </div>
+    <div class="infonugget">
+        <!-- TODO: context aware coloring -->
+        <div class="infonugget-icon orange">{% svg 'tick' %}</div>
+        <div class="infonugget-stat">{{ pending_tasks }}</div>
+        <div class="infonugget-description">tasks pending</div>
+    </div>
 <div class="infonugget">
   <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
   <div class="infonugget-stat">{{ visits_7 }}</div>
