@@ -17,3 +17,6 @@ docker-compose up web
 ## Setup Precommit Hooks
 1. `pip install pre-commit`
 2. `pre-commit install`
+
+## Bootstrapping some encampment data
+1. `docker-compose run web python manage.py bootstrap_location oakland` (or other supported location)
