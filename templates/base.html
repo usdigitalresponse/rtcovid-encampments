@@ -255,6 +255,16 @@ body {
 .datatable td, .datatable th {
   padding: 11px 20px;
 }
+
+    .datatable tr td:nth-child(even), .datatable tr th:nth-child(even) {
+      display:none;
+    }
+
+    @media (min-width: 600px) {
+  .datatable tr td:nth-child(even), .datatable tr th:nth-child(even) {
+      display:table-cell;
+    }
+}
 </style>
 
 
