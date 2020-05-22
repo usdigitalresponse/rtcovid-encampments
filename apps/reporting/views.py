@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from apps.reporting.models import Encampment
 from apps.reporting.models import Organization
 from apps.reporting.models import Report
+from apps.reporting.models import Task
 from apps.reporting.serializers import EncampmentSerializer
 from apps.reporting.serializers import OrganizationSerializer
 from apps.reporting.serializers import ReportSerializer
@@ -21,6 +22,7 @@ class EncampmentListView(ListView):
             "not_visited_14": Encampment.not_visited_in(14).count(),
             "visits_7": Report.last_n(7).count(),
             "visits_31": Report.last_n(31).count(),
+            "pending_tasks": Task.objects.filter(completed=None).count(),
             "table": EncampmentTable(self.object_list),
         }
         return {**context, **extra_context}
