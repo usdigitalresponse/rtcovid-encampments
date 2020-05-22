@@ -1,11 +1,27 @@
 {% extends "reporting/reporting_base.html" %}
 {% load render_table from django_tables2 %}
+{% load svg %}
 
 
 {% block content %}
-    <p>{{ not_visited_14 }} encampments not visited in the last 14 days</p>
-    <p>{{ visits_7 }} visits in last 7 days</p>
-    <p>{{ visits_31 }} visits in last 31 days</p>
+<div class="infopanel">
+<div class="infonugget">
+  <div class="infonugget-icon red">{% svg 'clock' %}</div>
+  <div class="infonugget-stat">{{ not_visited_14 }}</div>
+  <div class="infonugget-description">encampments not visited<br> in the last 14 days</div>
+</div>
+<div class="infonugget">
+  <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
+  <div class="infonugget-stat">{{ visits_7 }}</div>
+  <div class="infonugget-description"> visits in last<br> 7 days</div>
+</div>
+<div class="infonugget">
+  <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
+  <div class="infonugget-stat">{{ visits_31 }}</div>
+  <div class="infonugget-description">visits in last<br> 31 days</div>
+</div>
+</div>
+
     <h2>Encampments</h2>
      {% render_table table %}
 {% endblock %}

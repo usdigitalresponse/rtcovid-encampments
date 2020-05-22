@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "django_tables2",
+    "svg",
 ]
 
 MIDDLEWARE = [
