@@ -62,6 +62,9 @@ body {
 
 }
 
+.red { color: #B91010; }
+.grey { color: #888; }
+
 
 /* ================================
    Page Shell
@@ -114,7 +117,6 @@ body {
   grid-row: 2 / 4;
   grid-column: 2 / 3;
   min-height: 50vh;
-  padding: 20px;
   border-radius: 10px;
   box-shadow:  0px 0px 20px rgba(0, 0, 0, 0.25);
   background-color: #FFF;
@@ -179,7 +181,47 @@ body {
   background-color: #197546;
 }
 
+/* ================================
+   Info panel
+*/
+
+.infonugget {
+  display: flex;
+  align-items: center;
+  margin: 0 1em;
+}
+
+.infonugget > * {
+  margin: 0 .2em;
+}
+
+.infonugget-stat {
+  font-weight: bold;
+  font-size: 36px;
+}
+
+.infonugget-description {
+  font-weight: 300;
+  font-size: 14px;
+  color: #888;
+}
+
+.infopanel {
+  display:none;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-bottom: 1px solid #0001;
+  min-height: 5em;
+}
+
+    /* Shell response */
+@media (min-width: 600px) {
+  .infopanel{
+    display: flex;
+  }
+}
 </style>
+
 
 <div class="shell">
   <header class="shell-header">
