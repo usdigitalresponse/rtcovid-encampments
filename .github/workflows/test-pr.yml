@@ -28,4 +28,4 @@ jobs:
         run: docker-compose up -d && sleep 20
       - name: Test
         # docker exec because you can't disable the tty with docker-compose exec
-        run: docker exec encampments_web_1 python manage.py test
+        run: docker-compose run web python manage.py test

@@ -81,7 +81,7 @@ class Encampment(BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return "{} ({})".format(self.name, self.location)
 
 
 class Organization(BaseModel):
