@@ -55,16 +55,22 @@ body {
   display:none;
 }
 
+.container {
+  padding: 20px;
+}
+
 @media (min-width: 600px) {
   .show-on-desktop {
     display:unset;
   }
 
+  .container {
+    padding: 30px;
+  }
 }
 
 .red { color: #B91010; }
 .grey { color: #888; }
-
 
 /* ================================
    Page Shell
@@ -219,6 +225,35 @@ body {
   .infopanel{
     display: flex;
   }
+}
+
+
+/* ================================
+   Data Table
+*/
+
+.datatable { }
+.datatable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.datatable thead th {
+  font-weight: 300;
+  font-style: normal;
+  font-size: 14px;
+  text-transform: uppercase;
+  text-align: left;
+}
+.datatable thead a {
+  color: #888;
+}
+
+.datatable tbody tr:hover {
+  background-color: #F4F4F4;
+}
+
+.datatable td, .datatable th {
+  padding: 11px 20px;
 }
 </style>
 
