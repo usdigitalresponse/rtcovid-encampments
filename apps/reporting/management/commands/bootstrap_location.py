@@ -1,8 +1,6 @@
 import random
-import requests
 import string
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.geos import MultiPolygon
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.db import connection
