@@ -19,7 +19,7 @@ urlpatterns = [
     path(
         "reports/<str:encampment>/", views.ReportListView.as_view(), name="report-list"
     ),
-    path("reports/create", views.ReportCreateView.as_view()),
+    path("reports/create", views.ReportCreateView.as_view(), name="report-create"),
     # Organizations
     path("organizations/create", views.OrganizationCreateView.as_view()),
 ]
