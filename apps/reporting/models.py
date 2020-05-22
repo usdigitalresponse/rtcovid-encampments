@@ -48,6 +48,9 @@ class Encampment(BaseModel):
     def open_tasks(self):
         return self.tasks.filter(completed=None)
 
+    def reports(self):
+        return self.reports.order_by("-date")
+
     def last_report(self):
         return self.reports.order_by("-date").first()
 
@@ -67,7 +70,7 @@ class Encampment(BaseModel):
         return Encampment.objects.exclude(id__in=visited_encampments)
 
     def get_absolute_url(self):
-        return reverse("report-list", kwargs={"encampment": self.id})
+        return reverse("encampment-detail", kwargs={"pk": self.id})
 
     def save(self, *args, **kwargs):
         if not self.location_geom:
@@ -132,4 +135,4 @@ class Report(BaseModel):
         return Report.objects.filter(date__gt=threshold)
 
     def get_absolute_url(self):
-        return reverse("report-list", kwargs=dict(encampment=self.encampment.id))
+        return reverse("encampment-detail", kwargs=dict(pk=self.encampment.id))

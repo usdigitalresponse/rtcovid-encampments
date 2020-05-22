@@ -1,5 +1,8 @@
+from datetime import date
+
 import django_tables2 as tables
 from django.views.generic import CreateView
+from django.views.generic import DetailView
 from django.views.generic import ListView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
@@ -38,6 +41,23 @@ class EncampmentTable(tables.Table):
     next_visit = HybridDate(accessor="next_visit.date")
 
     tasks = tables.Column(accessor="open_tasks.count")
+
+
+class EncampmentDetailView(DetailView):
+    model = Encampment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.last_report():
+            days_since_last = (date.today() - self.object.last_report().date).days
+        else:
+            days_since_last = None
+        extra_context = {
+            "visits": self.object.reports.all(),
+            "days_since_last": days_since_last,
+            "open_tasks": self.object.open_tasks(),
+        }
+        return {**context, **extra_context}
 
 
 # TODO: admin permissions

@@ -1,0 +1,61 @@
+{% extends "reporting/reporting_base.html" %}
+{% load render_table from django_tables2 %}
+{% load svg %}
+
+
+{% block content %}
+<h2>{{ encampment.name }}</h2>
+<!-- TODO: get url for google maps right -->
+<a href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+<div class="infopanel">
+    <div class="infonugget">
+        <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
+        <div class="infonugget-stat">{{ visits|length }}</div>
+        <div class="infonugget-description"> Total Visits</div>
+    </div>
+    <div class="infonugget">
+        <div class="infonugget-icon red">{% svg 'clock' %}</div>
+        <div class="infonugget-stat">{{ days_since_last|default:"Never Visited"}}</div>
+        <div class="infonugget-description">days since last visit</div>
+    </div>
+    <div class="infonugget">
+        <div class="infonugget-icon grey">{% svg 'warning' %}</div>
+        <div class="infonugget-stat">{{ open_tasks|length }}</div>
+        <div class="infonugget-description">open tasks</div>
+    </div>
+</div>
+
+{% with visits|first as most_recent %}
+    {% if most_recent %}
+        Most Recent visit performed {{ most_recent.date }} by {{ most_recent.performed_by.name }}
+        <br />
+        Living Here: {{ most_recent.occupancy.lower }} - {{ most_recent.occupancy.upper }}. Talked to: {{ most_recent.talked_to }}
+        <br />
+
+        <h3>Deliveries: </h3>
+        Supplies: {{ most_recent.supplies_delivered }}
+<br>
+        Food: {{ most_recent.food_delivered }}
+
+<h3>Covid</h3>
+Assessed: {{ most_recent.assessed }}
+
+Without symptoms: {{ most_recent.assessed_asymptomatic }}
+
+<h3>Actions Required</h3>
+{{ most_recent.needs }}
+
+<h3>Notes</h3>
+{{ most_recent.notes }}
+    {% else %}
+        This encampment has never been visited
+    {% endif %}
+{% endwith %}
+
+<h3>Previous visits</h3>
+<ul>
+    {% for visit in visits|slice:"1:" %}
+    <li>{{ report.performed_by.name }} {{ report.date }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
