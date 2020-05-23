@@ -15,10 +15,12 @@ urlpatterns = [
     # Encampments
     path("encampments/", views.EncampmentListView.as_view(), name="encampment-list"),
     path("encampments/create", views.EncampmentCreateView.as_view()),
-    # Reporting
     path(
-        "reports/<str:encampment>/", views.ReportListView.as_view(), name="report-list"
+        "encampments/<str:pk>/",
+        views.EncampmentDetailView.as_view(),
+        name="encampment-detail",
     ),
+    # Reporting
     path("reports/create", views.ReportCreateView.as_view(), name="report-create"),
     # Organizations
     path("organizations/create", views.OrganizationCreateView.as_view()),
