@@ -9,6 +9,7 @@ from rest_framework import viewsets
 
 from apps.reporting.models import Encampment
 from apps.reporting.models import Organization
+from apps.reporting.models import Region
 from apps.reporting.models import Report
 from apps.reporting.models import Task
 from apps.reporting.serializers import EncampmentSerializer
@@ -19,6 +20,29 @@ from apps.reporting.serializers import ReportSerializer
 class EncampmentListView(ListView):
     model = Encampment
 
+    def get_queryset(self):
+        if self.kwargs.get("slug", None):
+            self.nav_context = self.kwargs["slug"]
+            queryset = self.model._default_manager.filter(
+                region__slug=self.kwargs["slug"]
+            )
+        elif self.kwargs.get("mode", None):
+            self.nav_context = self.kwargs["mode"]
+            if self.kwargs["mode"] == "tasked":
+                queryset = self.model._default_manager.tasked()
+            elif self.kwargs["mode"] == "delayed":
+                queryset = self.model._default_manager.delayed()
+        else:
+            self.nav_context = ""
+            queryset = self.model._default_manager.all()
+
+        ordering = self.get_ordering()
+        if ordering:
+            if isinstance(ordering, str):
+                ordering = (ordering,)
+            queryset = queryset.order_by(*ordering)
+        return queryset
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         extra_context = {
@@ -27,6 +51,8 @@ class EncampmentListView(ListView):
             "visits_31": Report.last_n(31).count(),
             "pending_tasks": Task.objects.filter(completed=None).count(),
             "table": EncampmentTable(self.object_list),
+            "regions": Region.objects.all(),
+            "nav_context": self.nav_context,
         }
         return {**context, **extra_context}
 
@@ -62,12 +88,6 @@ class EncampmentDetailView(DetailView):
         return {**context, **extra_context}
 
 
-# TODO: admin permissions
-class EncampmentCreateView(CreateView):
-    model = Encampment
-    fields = ["name", "locations_geom"]
-
-
 class ReportListView(ListView):
     model = Report
 
@@ -80,11 +100,6 @@ class ReportListView(ListView):
         context = super().get_context_data(**kwargs)
         context["encampment"] = Encampment.objects.get(id=self.kwargs["encampment"])
         return context
-
-
-class OrganizationCreateView(CreateView):
-    model = Organization
-    fields = ["name"]
 
 
 class ReportCreateView(CreateView):

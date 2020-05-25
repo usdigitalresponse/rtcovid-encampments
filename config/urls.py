@@ -6,8 +6,9 @@ from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
-    path("admax/", admin.site.urls),
     path("", include("apps.reporting.urls")),
+    path("admax/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
     url(r"^api-auth/", include("rest_framework.urls")),
     path(
         "openapi",
@@ -24,5 +25,4 @@ urlpatterns = [
         ),
         name="swagger-ui",
     ),
-    # path("/schedule", include("apps.scheduling.urls")),
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "DUMMY_DEV_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SITE_ID = 1
 ALLOWED_HOSTS = []
 
 
@@ -39,12 +39,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
+    "django.contrib.sites",
     "apps.reporting",
-    "apps.scheduling",
     "rest_framework",
     "django_filters",
     "django_tables2",
     "svg",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "stronghold",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "stronghold.middleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -92,20 +98,6 @@ DATABASES = {
     )
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
-]
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -126,6 +118,42 @@ STATIC_ROOT = BASE_DIR / "static_root"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 
+# Authentication Settings
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
+LOGIN_REDIRECT_URL = "/"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_ADAPTER = "config.auth.ClosedAccountAdapter"  # Don't allow signups
+ACCOUNT_SESSION_REMEMBER = True  # Allow users to stay logged in
+ACCOUNT_EMAIL_VERIFICATION = "none"  # Don't require email verification
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # log in with either username or email
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"  # links should use HTTPS
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # Timeout after this many failed attempts
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900  # Duration of timeout (seconds)
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.environ.get("GOOGLE_CLIENT_ID", ""),
+            "secret": os.environ.get("GOOGLE_SECRET", ""),
+            "key": os.environ.get("GOOGLE_KEY", ""),
+        }
+    }
+}
+
+STRONGHOLD_PUBLIC_URLS = (r"^/accounts/.+$",)
 
 # Local options
 LOCAL_CITY = "Oakland, CA"  # Used to focus geocoding requests

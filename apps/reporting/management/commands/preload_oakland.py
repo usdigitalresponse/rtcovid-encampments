@@ -2,6 +2,7 @@ import requests
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.geos import MultiPolygon
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 
 from apps.reporting.models import Region
 
@@ -28,7 +29,9 @@ class Command(BaseCommand):
             # Munge the name into something sensible
             name = "District {}".format(feature["properties"]["Name"])
 
-            r, created = Region.objects.get_or_create(name=name, geom=geom,)
+            r, created = Region.objects.get_or_create(
+                name=name, slug=slugify(name), geom=geom,
+            )
             if created:
                 count += 1
         self.stdout.write(

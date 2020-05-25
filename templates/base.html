@@ -134,6 +134,9 @@ body {
   grid-column: 2/3;
   grid-row: -1;
   padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
 }
 
 /* Shell response */
@@ -335,20 +338,20 @@ body {
 <div class="shell">
   <header class="shell-header">
     <div class="shell-header-start">
-      <h1>ENCAMPMENT TRACKER</h1>
+      <h1><a href="{% url 'encampment-list' %}">ENCAMPMENT TRACKER</a></h1>
     </div>
 
     <nav class="inlinenav">
       <a href="#" class="button button-alternative">Schedule a Visit</a>
       <a href="{% url 'report-create' %}" class="button button-alternative">Submit a Report</a>
-      <a href="#" class="show-on-desktop">Admins</a>
-      <a href="#" class="show-on-desktop">Log Out</a>
+      {% if request.user.is_staff %}<a href="{% url 'admin:index' %}" class="show-on-desktop">Admins</a>{% endif %}
+      {% if request.user.is_authenticated %}<a href="{% url 'account_logout' %}" class="show-on-desktop">Log Out</a>{% endif %}
     </nav>
   </header>
   <main class="shell-body">
     {% block content %}{% endblock %}
   </main>
-  <footer class="shell-footer">Footer</footer>
+  <footer class="shell-footer">Unauthorized access prohibited.</footer>
 
 </div>
 

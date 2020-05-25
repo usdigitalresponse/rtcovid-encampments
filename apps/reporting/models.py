@@ -9,7 +9,11 @@ from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres import fields as pgfields
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse_lazy as reverse
+from django.utils.text import slugify
+
+
+DELAY_THRESHOLD_DAYS = 14
 
 
 class BaseModel(models.Model):
@@ -23,14 +27,38 @@ class BaseModel(models.Model):
 
 class Region(BaseModel):
     name = models.CharField(max_length=50)
+    slug = models.SlugField()
     geom = MultiPolygonField(srid=4326)
 
     @classmethod
     def get_for_point(cls, pt):
         return cls.objects.get(geom__contains=pt)
 
+    def save(self, *args, **kwargs):
+        if not self.slug or self.slug == "":
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("region-detail", kwargs={"slug": self.slug})
+
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ("name",)
+
+
+class EncampmentManager(models.Manager):
+    def tasked(self, **kwargs):
+        return self.filter(tasks__completed=None).exclude(tasks__isnull=True)
+
+    def delayed(self, days=DELAY_THRESHOLD_DAYS, **kwargs):
+        threshold = date.today() - timedelta(days=days)
+        visited_encampments = [
+            r.encampment.id for r in Report.objects.filter(date__gt=threshold)
+        ]
+        return self.exclude(id__in=visited_encampments)
 
 
 class Encampment(BaseModel):
@@ -63,11 +91,7 @@ class Encampment(BaseModel):
 
     @classmethod
     def not_visited_in(cls, n_days: int):
-        threshold = date.today() - timedelta(days=n_days)
-        visited_encampments = [
-            r.encampment.id for r in Report.objects.filter(date__gt=threshold)
-        ]
-        return Encampment.objects.exclude(id__in=visited_encampments)
+        return Encampment.objects.delayed(days=n_days)
 
     def get_absolute_url(self):
         return reverse("encampment-detail", kwargs={"pk": self.id})
@@ -89,9 +113,20 @@ class Encampment(BaseModel):
     def __str__(self):
         return "{} ({})".format(self.name, self.location)
 
+    objects = EncampmentManager()
+
+    class Meta:
+        ordering = ("name",)
+
 
 class Organization(BaseModel):
-    name = models.TextField()
+    name = models.CharField(max_length=100)
+    users = models.ManyToManyField(
+        "auth.User", related_name="organizations", blank=True
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Task(BaseModel):
