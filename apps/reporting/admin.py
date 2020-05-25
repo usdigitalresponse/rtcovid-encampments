@@ -12,6 +12,7 @@ class EncampmentAdmin(admin.OSMGeoAdmin):
 
 class RegionAdmin(admin.OSMGeoAdmin):
     modifiable = False
+    prepopulated_fields = {"slug": ("name",)}
 
 
 class OrganizationAdmin(admin.ModelAdmin):

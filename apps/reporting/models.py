@@ -9,7 +9,8 @@ from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres import fields as pgfields
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse_lazy as reverse
+from django.utils.text import slugify
 
 
 class BaseModel(models.Model):
@@ -23,11 +24,20 @@ class BaseModel(models.Model):
 
 class Region(BaseModel):
     name = models.CharField(max_length=50)
+    slug = models.SlugField()
     geom = MultiPolygonField(srid=4326)
 
     @classmethod
     def get_for_point(cls, pt):
         return cls.objects.get(geom__contains=pt)
+
+    def save(self, *args, **kwargs):
+        if not self.slug or self.slug == "":
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("region-detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.name
