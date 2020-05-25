@@ -267,6 +267,68 @@ body {
       display:table-cell;
     }
 }
+
+
+    .fieldset {
+      border-radius: 20px;
+      background-color: #F8F8F8;
+      border: 5px;
+      padding: 0;
+    }
+
+     @media (min-width: 600px) {
+       .fieldset {
+        padding: 15px 20px;
+       }
+     }
+
+    .field {
+      padding: 12px 15px;
+    }
+
+    .field + .field {
+      border-top: 1px solid #FFF;
+    }
+    .field > label {
+      font-size: 14px;
+      color: #888;
+    }
+    .field-input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 5px 0;
+      background-color: inherit;
+      border: 0;
+      font-size: 16px;
+    }
+    .field-input:focus {
+      background-color: #FFF;
+    }
+    .field-input::placeholder {
+      color: #CCC;
+    }
+
+    @media (min-width: 600px) {
+      .field {
+         display: flex;
+         align-items: center;
+      }
+
+     .field + .field {
+        border-top: 0;
+      }
+
+     .field > label {
+       flex-basis: 200px;
+       flex-shrink: 0;
+     }
+
+      .field-input {
+        padding: 10px;
+        border: 1px solid #EEE;
+        background-color: #FFF;
+      }
+    }
 </style>
 
 

@@ -1,6 +1,33 @@
 {% extends "reporting/reporting_base.html" %}
 {% block content %}
 {{ form.media }}
+
+<div class="container">
+
+<fieldset class="fieldset">
+    <div class="field">
+      <label>This is for this field</label>
+      <input class="field-input" type="text" placeholder="Enter details">
+    </div>
+    <div class="field">
+      <label>This is for this field</label>
+      <input type="text" class="field-input" placeholder="Enter details">
+    </div>
+    <div class="field">
+      <label>This is for this field with a really long label</label>
+      <input type="text" class="field-input" placeholder="Enter details">
+    </div>
+</fieldset>
+
+</div>
+
+<style>
+#id_recorded_location_div_map {
+  display: none;
+  width: 100%;
+  overflow: hidden;
+}
+</style>
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save">
