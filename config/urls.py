@@ -24,5 +24,4 @@ urlpatterns = [
         ),
         name="swagger-ui",
     ),
-    # path("/schedule", include("apps.scheduling.urls")),
 ]

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.gis",
     "apps.reporting",
-    "apps.scheduling",
     "rest_framework",
     "django_filters",
     "django_tables2",
