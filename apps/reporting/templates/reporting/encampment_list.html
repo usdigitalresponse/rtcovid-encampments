@@ -28,6 +28,14 @@
 </div>
 </div>
 <div class="container">
+    <ul class="table-nav">
+      <li class="{% if not nav_context %}active{% endif %}"><a href="{% url 'encampment-list' %}">All Encampments</a></li>
+      <li class="{% if nav_context == delayed %}active{% endif %}"><a href="{% url 'encampment-list-filtered' 'delayed' %}">Not Visited <span class="nav-count">3</span></a></li>
+      <li class="{% if nav_context == tasked %}active{% endif %}"><a href="{% url 'encampment-list-filtered' 'tasked' %}">Tasks <span class="nav-count">32</span></a></li>
+      {% for region in regions %}
+        <li class="{% if nav_context == region.slug %}active{% endif %}"><a href="{{region.get_absolute_url}}">{{region.name}}</a></li>
+      {% endfor %}
+    </ul>
     <div class="datatable">
      {% render_table table %}
     </div>

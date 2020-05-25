@@ -12,6 +12,8 @@ router.register(r"organizations", views.OrganizationViewSet)
 router.register(r"encampments", views.EncampmentViewSet)
 
 urlpatterns = [
+    # API
+    path("api/", include(router.urls)),
     # Encampments
     path("", views.EncampmentListView.as_view(), name="encampment-list"),
     path(
@@ -19,8 +21,16 @@ urlpatterns = [
         views.EncampmentDetailView.as_view(),
         name="encampment-detail",
     ),
+    # Regions
+    path(
+        "regions/<str:slug>/", views.EncampmentListView.as_view(), name="region-detail"
+    ),
+    # Filters
+    path(
+        "filters/<str:mode>/",
+        views.EncampmentListView.as_view(),
+        name="encampment-list-filtered",
+    ),
     # Reporting
     path("reports/create", views.ReportCreateView.as_view(), name="report-create"),
-    # API
-    path("api/", include(router.urls)),
 ]
