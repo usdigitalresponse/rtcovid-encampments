@@ -280,7 +280,7 @@ body {
       <a href="#" class="button button-alternative">Schedule a Visit</a>
       <a href="{% url 'report-create' %}" class="button button-alternative">Submit a Report</a>
       {% if request.user.is_staff %}<a href="{% url 'admin:index' %}" class="show-on-desktop">Admins</a>{% endif %}
-      <a href="#" class="show-on-desktop">Log Out</a>
+      <a href="{% url 'account_logout' %}" class="show-on-desktop">Log Out</a>
     </nav>
   </header>
   <main class="shell-body">
