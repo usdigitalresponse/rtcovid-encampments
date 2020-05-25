@@ -62,12 +62,6 @@ class EncampmentDetailView(DetailView):
         return {**context, **extra_context}
 
 
-# TODO: admin permissions
-class EncampmentCreateView(CreateView):
-    model = Encampment
-    fields = ["name", "locations_geom"]
-
-
 class ReportListView(ListView):
     model = Report
 
@@ -80,11 +74,6 @@ class ReportListView(ListView):
         context = super().get_context_data(**kwargs)
         context["encampment"] = Encampment.objects.get(id=self.kwargs["encampment"])
         return context
-
-
-class OrganizationCreateView(CreateView):
-    model = Organization
-    fields = ["name"]
 
 
 class ReportCreateView(CreateView):
