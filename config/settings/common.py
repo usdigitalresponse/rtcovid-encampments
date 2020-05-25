@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
+from pathlib import Path
 
 import dj_database_url
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'static' / 'css'
 BASE_DIR = Path(__file__).parent.parent.parent
