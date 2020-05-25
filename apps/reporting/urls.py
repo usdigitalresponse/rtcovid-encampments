@@ -13,7 +13,7 @@ router.register(r"encampments", views.EncampmentViewSet)
 urlpatterns = [
     path("api/", include(router.urls)),
     # Encampments
-    path("encampments/", views.EncampmentListView.as_view(), name="encampment-list"),
+    path("", views.EncampmentListView.as_view(), name="encampment-list"),
     path("encampments/create", views.EncampmentCreateView.as_view()),
     path(
         "encampments/<str:pk>/",
