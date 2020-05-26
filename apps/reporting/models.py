@@ -159,6 +159,8 @@ class Report(BaseModel):
     encampment = models.ForeignKey(
         Encampment, on_delete=models.CASCADE, related_name="reports"
     )
+
+    type_of_setup = models.CharField(max_length=100)
     performed_by = models.ForeignKey(Organization, on_delete=models.CASCADE)
     date = models.DateField()
     recorded_location = PointField(null=True, srid=4326)
@@ -168,9 +170,13 @@ class Report(BaseModel):
     supplies_delivered = models.TextField(blank=True)
     food_delivered = models.TextField(blank=True)
     occupancy = pgfields.IntegerRangeField(null=True)
+
     talked_to = models.IntegerField()
     assessed = models.IntegerField()
     assessed_asymptomatic = models.IntegerField()
+    # Looking through the sheet, we probably to suggest "verbal", "flyer", "none", "declined" but allow free text
+    # if neither fits.
+    education_provided = models.CharField(max_length=100)
 
     needs = models.TextField(blank=True)
     notes = models.TextField(blank=True)
