@@ -313,10 +313,11 @@ body.dashboard .container {
 
 
     .fieldset {
-      border-radius: 20px;
+      border-radius: 5px;
       background-color: #F8F8F8;
       border: 5px;
       padding: 0;
+      margin-bottom: 20px;
     }
 
      @media (min-width: 600px) {
@@ -335,15 +336,17 @@ body.dashboard .container {
     .field > label {
       font-size: 14px;
       color: #888;
+      text-transform: uppercase;
     }
     .field-input {
       box-sizing: border-box;
-      width: 100%;
       padding: 5px 0;
+      width: 100%;
       background-color: inherit;
       border: 0;
       font-size: 16px;
     }
+    .field-input[size] { width: auto; }
     .field-input:focus {
       background-color: #FFF;
     }

@@ -1,9 +1,16 @@
 {% extends "reporting/reporting_base.html" %}
 {% block content %}
+<style>
+#id_recorded_location_div_map {
+  display: none;
+  width: 100%;
+  overflow: hidden;
+}
+</style>
 {{ form.media }}
 
 <div class="container">
-
+<!-- 
 <fieldset class="fieldset">
     <div class="field">
       <label>This is for this field</label>
@@ -17,19 +24,86 @@
       <label>This is for this field with a really long label</label>
       <input type="text" class="field-input" placeholder="Enter details">
     </div>
-</fieldset>
+</fieldset> -->
+
+<form method="post">{% csrf_token %}
+  <fieldset class="fieldset">
+    <div class="field">
+      <label>Encampment Visited</label>
+      <select name="encampment">
+        <option selected="selected">34th & Adeline</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Visit date</label>
+      <input class="field-input" name="date" required type="text" size="15" placeholder="MM / DD / YYYY">
+    </div>
+    <div class="field">
+      <label>Visiting organization</label>
+      <select name="performed_by" required>
+        <option selected="selected">Operation Dignity</option>
+      </select>
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <div class="field">
+      <label>Type of set-up</label>
+      <input class="field-input" name="date" required type="text" placeholder="Tents, RVs, etc.">
+    </div>
+    <div class="field">
+      <label>People living here</label>
+      <select name="occupancy" required>
+        <option selected="selected" value="">Choose a range</option>
+        <option value="0-10">0-10</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>People talked to</label>
+      <input class="field-input" name="talked_to" size="10" required type="number" placeholder="Enter a number">
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <div class="field">
+      <label>Supplies delivered</label>
+      <textarea class="field-input" name="supplies_delivered" placeholder="Enter item(s) & quantities"></textarea>
+    </div>
+    <div class="field">
+      <label>Food delivered</label>
+      <textarea class="field-input" name="supplies_delivered" placeholder="Enter item(s) & quantities"></textarea>
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <div class="field">
+      <label>COVID education provided</label>
+      <select name="education_provided" required>
+        <option selected="selected" value="">Choose one</option>
+        <option value="0-10">0-10</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>People assessed for covid</label>
+      <input class="field-input" name="assessed" size="10" required type="number" placeholder="Enter a number">
+    </div>
+    <div class="field">
+      <label>People assessed for covid & asymptomatic</label>
+      <input class="field-input" name="assessed_asymptomatic" size="10" required type="number" placeholder="Enter a number">
+    </div>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <div class="field">
+      <label>Notes</label>
+      <textarea class="field-input" name="notes" placeholder="Enter details"></textarea>
+    </div>
+  </fieldset>
+    <input class="button" type="submit" value="Submit Report">
+</form>
 
 </div>
 
-<style>
-#id_recorded_location_div_map {
-  display: none;
-  width: 100%;
-  overflow: hidden;
-}
-</style>
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-</form>
+
+
 {% endblock %}
