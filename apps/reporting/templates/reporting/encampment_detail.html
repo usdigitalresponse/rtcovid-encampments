@@ -4,20 +4,24 @@
 
 
 {% block content %}
-<h2>{{ encampment.name }}</h2>
-<!-- TODO: get url for google maps right -->
-<a href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+<div class="page-header">
+    <h2>{{ encampment.name }}</h2>
+    <!-- TODO: get url for google maps right -->
+    <a class="button" href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+</div>
 <div class="infopanel">
     <div class="infonugget">
         <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
         <div class="infonugget-stat">{{ visits|length }}</div>
         <div class="infonugget-description"> Total Visits</div>
     </div>
+    {% if days_since_last %}
     <div class="infonugget">
         <div class="infonugget-icon red">{% svg 'clock' %}</div>
         <div class="infonugget-stat">{{ days_since_last|default:"Never Visited"}}</div>
         <div class="infonugget-description">days since last visit</div>
     </div>
+    {% endif %}
     <div class="infonugget">
         <div class="infonugget-icon grey">{% svg 'warning' %}</div>
         <div class="infonugget-stat">{{ open_tasks|length }}</div>
