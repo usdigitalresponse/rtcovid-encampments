@@ -49,7 +49,7 @@ class EncampmentListView(ListView):
             "not_visited_14": Encampment.not_visited_in(14).count(),
             "visits_7": Report.last_n(7).count(),
             "visits_31": Report.last_n(31).count(),
-            "visits_14": Report.last_n(14).count()
+            "visits_14": Report.last_n(14).count(),
             "pending_tasks": Task.objects.filter(completed=None).count(),
             "table": EncampmentTable(self.object_list),
             "regions": Region.objects.all(),
