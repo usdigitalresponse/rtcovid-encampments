@@ -31,13 +31,14 @@
 
 <div class="main-panel">
     <div class="visit-panel">
+        {% with visits|first as most_recent %}
+        {% if most_recent %}
         <div class="most-recent visits">
             <div class="visits-header">
                 Most Recent Visit
             </div>
             <div class="visits-content">
-                {% with visits|first as most_recent %}
-                {% if most_recent %}
+                
                 Most Recent visit performed {{ most_recent.date }} by {{ most_recent.performed_by.name }}
                 <br />
                 Living Here: {{ most_recent.occupancy.lower }} - {{ most_recent.occupancy.upper }}. Talked to: {{ most_recent.talked_to }}
@@ -58,33 +59,36 @@
 
                 <h3>Notes</h3>
                 {{ most_recent.notes }}
-                {% else %}
-                This encampment has never been visited
-                {% endif %}
-                {% endwith %}
             </div>
         </div>
-        <br />
-       <div class="previous visits" >
-           <div class="visits-header">
-               Previous Visits
-           </div>
-           <div class="visits-content">
-                <ul>
-                     {% for visit in visits|slice:"1:" %}
-                     <li>{{ visit.performed_by.name }} {{ visit.date }}</li>
-                     {% endfor %}
-                 </ul>
-           </div>
-       </div>
-
+        {% else %}
+        This location has never been visited
+        {% endif %}
+        {% endwith %}
+        {% for visit in visits|slice:"1:" %}
+            {% if forloop.first %}
+            <div class="previous visits" >
+                <div class="visits-header">
+                   Previous Visits
+                </div>
+                <div class="visits-content">
+                    <ul>
+            {% endif %}
+            <li>{{ visit.performed_by.name }} {{ visit.date }}</li>
+            {% if forloop.last %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="tasks">
         <div class="header">
             <div>Tasks</div>
         </div>
         <div class="form">
-            <form method="post" action={% url 'task-create' %}>{% csrf_token %}
+            <form method="post" action="{% url 'task-create' %}">
+                {% csrf_token %}
                 {{ task_form.as_p }}
                 <input type="submit" value="Save new task">
             </form>
@@ -93,8 +97,9 @@
             <div class="task open">
                 <h3>{{ task.title }}</h3>
                 <p>{{ task.details }}</p>
-                <form method="post" action={% url 'task-complete' pk=task.id %}>{% csrf_token %}
-                <input type="submit" value="Mark task completed">
+                <form method="post" action="{% url 'task-complete' pk=task.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Mark task completed">
                 </form>
             </div>
         {% endfor %}
