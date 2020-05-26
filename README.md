@@ -20,3 +20,7 @@ docker-compose up web
 
 ## Bootstrapping some encampment data
 1. `docker-compose run web python manage.py bootstrap_location oakland` (or other supported location)
+
+## Creating a user login
+1. Log into container terminal with `docker-compose exec web bash`
+2. Run `python manage.py createsuperuser` to create the user account
