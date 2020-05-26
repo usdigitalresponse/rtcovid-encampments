@@ -52,7 +52,7 @@ class Region(BaseModel):
 
 class EncampmentManager(models.Manager):
     def tasked(self, **kwargs):
-        return self.filter(tasks__completed=None).exclude(tasks__isnull=True)
+        return self.filter(tasks__completed=None).exclude(tasks__isnull=True).distinct()
 
     def delayed(self, days=DELAY_THRESHOLD_DAYS, **kwargs):
         threshold = date.today() - timedelta(days=days)
