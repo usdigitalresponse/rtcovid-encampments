@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
- <title>Encampment Tracker</title>
+    <meta charset="UTF-8">
+    <title>Encampment Tracker</title>
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
 
@@ -143,6 +143,7 @@ body {
   font-size: 14px;
 }
 
+
 /* Shell response */
 @media (min-width: 600px) {
   .shell {
@@ -227,6 +228,10 @@ body {
   justify-content: center;
   border-bottom: 1px solid #0001;
   min-height: 5em;
+  background: #f8f8f8;
+}
+.dashboard .infopanel {
+  background: transparent;
 }
 
     /* Shell response */
@@ -373,126 +378,128 @@ body.dashboard .container {
       }
     }
 
-    /* ===
-    Detail
-    */
+  /* ===
+  Detail
+  */
 
-    .main-panel {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-    }
+  .main-panel {
+    padding-top: 50px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
 
-    .most-recent {
-      display: flex;
-    }
+  .most-recent {
+    display: flex;
+  }
 
-    .visits-header {
-      width: 183px;
-      color: white;
-      height: 39px;
-      border-radius: 0px 4px 4px 0px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      text-transform: uppercase;
-      padding-right: 17px;
-      justify-content: flex-end;
-      margin-right: 30px;
-      box-sizing: border-box;
-    }
+  .visits-header {
+    width: 183px;
+    color: white;
+    height: 39px;
+    border-radius: 0px 4px 4px 0px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    padding-right: 17px;
+    justify-content: flex-end;
+    margin-right: 30px;
+    box-sizing: border-box;
+  }
 
-    .visit-panel > .most-recent > .visits-header {
-      background: #333333;
-    }
+  .visit-panel > .most-recent > .visits-header {
+    background: #333333;
+  }
 
-    .visit-panel > .previous > .visits-header {
-      background: #888888;
-    }
+  .visit-panel > .previous > .visits-header {
+    background: #888888;
+  }
 
-    .tasks > .header {
-      display: flex;
-      justify-content: space-between;
-    }
+  .tasks > .header {
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .task {
-      background: #f8f8f8;
-      margin-bottom: 10px;
-      padding: 22px;
-      border-left: 3px solid;
-    }
+  .task {
+    background: #f8f8f8;
+    margin-bottom: 10px;
+    padding: 22px;
+    border-left: 3px solid;
+  }
 
-    .task.open {
-      border-color: #063;
-    }
+  .task.open {
+    border-color: #063;
+  }
 
-    .spacer {
-      width: 1px;
-      background-color: #EEEEEE;
-      margin-left: 10px;
-      margin-right: 10px;
-    }
+  .spacer {
+    width: 1px;
+    background-color: #EEEEEE;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
-    .date-bar {
-      display: flex;
-    }
+  .date-bar {
+    display: flex;
+  }
 
-    .previous-visit {
-      display: flex;
-    }
+  .previous-visit {
+    display: flex;
+  }
 
-    .visit-info {
-      display: flex;
-      margin-bottom: 10px;
-    }
+  .visit-info {
+    display: flex;
+    margin-bottom: 10px;
+  }
 
-    .visit-detail {
-      display: flex;
-      flex-direction: column;
-      padding-left: 30px;
-      padding-right: 30px;
-    }
+  .visit-detail {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
 
-    .visit-info > h2 {
-      color: #999888;
-      font-size: 14px;
-      font-weight: normal;
-      width: 100px;
-    }
+  .visit-info > h2 {
+    color: #999888;
+    font-size: 14px;
+    font-weight: normal;
+    width: 100px;
+  }
 
-    .visit-detail > h3 {
-      color: #999999;
-      font-size: 14px;
-      font-weight: normal;
-    }
+  .visit-detail > h3 {
+    color: #999999;
+    font-size: 14px;
+    font-weight: normal;
+  }
 
-    .task.closed {
-      border-color: #CCCCCC;
-    }
+  .task.closed {
+    border-color: #CCCCCC;
+  }
 
-    .task > h3 {
-      font-size: 14px;
-      font-weight: 500;
-      font-style: normal;
-    }
+  .task > h3 {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+  }
 
-    .task > p {
-      color: #888888;
-      font-size: 14px;
-      line-height: 17px;
-    }
+  .task > p {
+    color: #888888;
+    font-size: 14px;
+    line-height: 17px;
+  }
 
-    .content {
-      /*background: red;*/
-    }
+  .content {
+    /*background: red;*/
+  }
 
-    .visits {
-      display: flex;
-    }
+  .visits {
+    display: flex;
+  }
 
-    .tasks {
-      flex-basis: 300px;
-    }
+  .tasks {
+    flex-basis: 300px;
+  }
+
 </style>
 
 

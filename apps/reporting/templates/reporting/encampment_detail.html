@@ -28,13 +28,13 @@
 
 <div class="main-panel">
     <div class="visit-panel">
+        {% with visits|first as most_recent %}
+        {% if most_recent %}
         <div class="most-recent visits">
             <div class="visits-header">
                 Most Recent Visit
             </div>
             <div class="visits-content">
-                {% with visits|first as most_recent %}
-                {% if most_recent %}
                 <div class="date-bar">
                     <div>{{ most_recent.date }}</div>
                     <div class="spacer"></div>
@@ -105,19 +105,21 @@
                     </div>
                 </div>
 
-                {% else %}
-                This encampment has never been visited
-                {% endif %}
-                {% endwith %}
             </div>
         </div>
+        {% else %}
+        This encampment has never been visited
+        {% endif %}
+        {% endwith %}
         <br/>
         <div class="previous visits">
-            <div class="visits-header">
-                Previous Visits
-            </div>
-            <div class="visits-content">
                 {% for visit in visits|slice:"1:" %}
+                {% if forloop.first %}
+                <div class="visits-header">
+                    Previous Visits
+                </div>
+                {% endif %}
+            <div class="visits-content">
                 <div class="previous-visit">
                     <div class="date">{{ visit.date }}</div>
                     <div class="spacer"></div>
@@ -135,19 +137,19 @@
             <div>Tasks</div>
         </div>
         <div class="form">
-            <form method="post" action={% url
-            'task-create' %}>{% csrf_token %}
-            {{ task_form.as_p }}
-            <input type="submit" value="Save new task">
+            <form method="post" action="{% url 'task-create' %}">
+                {% csrf_token %}
+                {{ task_form.as_p }}
+                <input type="submit" value="Save new task">
             </form>
         </div>
         {% for task in open_tasks|slice:":3" %}
         <div class="task open">
             <h3>{{ task.title }}</h3>
             <p>{{ task.details }}</p>
-            <form method="post" action={% url
-            'task-complete' pk=task.id %}>{% csrf_token %}
-            <input type="submit" value="Mark task completed">
+            <form method="post" action="{% url 'task-complete' pk=task.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Mark task completed">
             </form>
         </div>
         {% endfor %}
