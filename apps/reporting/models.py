@@ -10,6 +10,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse_lazy as reverse
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -76,6 +77,9 @@ class Encampment(BaseModel):
     def open_tasks(self):
         return self.tasks.filter(completed=None)
 
+    def completed_tasks(self):
+        return self.tasks.exclude(completed=None)
+
     def reports(self):
         return self.reports.order_by("-date")
 
@@ -137,6 +141,13 @@ class Task(BaseModel):
     )
 
     completed = models.DateTimeField(null=True)
+
+    def get_absolute_url(self):
+        return reverse("encampment-detail", kwargs={"pk": self.encampment.id})
+
+    def mark_completed(self):
+        self.completed = timezone.now()
+        self.save()
 
 
 class ScheduledVisit(BaseModel):

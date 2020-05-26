@@ -1,12 +1,17 @@
 from datetime import date
 
 import django_tables2 as tables
+from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views.generic.base import View
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import BaseCreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
+from apps.reporting.forms import TaskForm
 from apps.reporting.models import Encampment
 from apps.reporting.models import Organization
 from apps.reporting.models import Region
@@ -80,12 +85,30 @@ class EncampmentDetailView(DetailView):
             days_since_last = (date.today() - self.object.last_report().date).days
         else:
             days_since_last = None
+        task_form = TaskForm()
+        task_form.fields["encampment"].initial = self.object
         extra_context = {
             "visits": self.object.reports.all(),
             "days_since_last": days_since_last,
             "open_tasks": self.object.open_tasks(),
+            "completed_tasks": self.object.completed_tasks(),
+            "task_form": task_form,
         }
         return {**context, **extra_context}
+
+
+class CompleteTask(SingleObjectMixin, View):
+    model = Task
+
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        task.mark_completed()
+        return HttpResponseRedirect(task.get_absolute_url())
+
+
+class CreateTask(BaseCreateView):
+    form_class = TaskForm
+    model = Task
 
 
 class ReportListView(ListView):
