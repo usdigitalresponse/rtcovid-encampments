@@ -1,6 +1,7 @@
 {% extends "reporting/reporting_base.html" %}
 {% load render_table from django_tables2 %}
 {% load svg %}
+{% load extras %}
 
 
 {% block content %}
@@ -27,52 +28,108 @@
 
 <div class="main-panel">
     <div class="visit-panel">
+        {% with visits|first as most_recent %}
+        {% if most_recent %}
         <div class="most-recent visits">
             <div class="visits-header">
                 Most Recent Visit
             </div>
             <div class="visits-content">
-                {% with visits|first as most_recent %}
-                {% if most_recent %}
-                Most Recent visit performed {{ most_recent.date }} by {{ most_recent.performed_by.name }}
-                <br />
-                Living Here: {{ most_recent.occupancy.lower }} - {{ most_recent.occupancy.upper }}. Talked to: {{ most_recent.talked_to }}
-                <br />
+                <div class="date-bar">
+                    <div>{{ most_recent.date }}</div>
+                    <div class="spacer"></div>
+                    <div>{{ most_recent.date | ago }}</div>
+                </div>
+                <div class="performed-by">
+                    {{ most_recent.performed_by }}
+                </div>
 
-                <h3>Deliveries: </h3>
-                Supplies: {{ most_recent.supplies_delivered }}
-                <br>
-                Food: {{ most_recent.food_delivered }}
+                <div class="visit-info">
+                    <h2>Status</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Type of setup</h3>
+                        <p>{{ most_recent.type_of_setup }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Living here</h3>
+                        <p>{{ most_recent.occupancy.lower }} - {{ most_recent.occupancy.upper }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Talked to</h3>
+                        <p>{{ most_recent.talked_to }}</p>
+                    </div>
+                </div>
+                <div class="visit-info">
+                    <h2>Deliveries</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Supplies Delivered</h3>
+                        <p>{{ most_recent.supplies_delivered }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Food Delivered</h3>
+                        <p>{{ most_recent.food_delivered }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Talked to</h3>
+                        <p>{{ most_recent.talked_to }}</p>
+                    </div>
+                </div>
+                <div class="visit-info">
+                    <h2>Covid</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Education</h3>
+                        <p>{{ most_recent.education_provided }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Assessed</h3>
+                        <p>{{ most_recent.assessed }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Asymptomatic</h3>
+                        <p>{{ most_recent.assessed_asymptomatic }}</p>
+                    </div>
+                </div>
+                <div class="visit-info">
+                    <h2>Actions</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Outstanding Needs</h3>
+                        <p>{{ most_recent.needs }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Notes / next steps</h3>
+                        <p>{{ most_recent.notes }}</p>
+                    </div>
+                </div>
 
-                <h3>Covid</h3>
-                Assessed: {{ most_recent.assessed }}
-
-                Without symptoms: {{ most_recent.assessed_asymptomatic }}
-
-                <h3>Actions Required</h3>
-                {{ most_recent.needs }}
-
-                <h3>Notes</h3>
-                {{ most_recent.notes }}
-                {% else %}
-                This encampment has never been visited
-                {% endif %}
-                {% endwith %}
             </div>
         </div>
-        <br />
-       <div class="previous visits" >
-           <div class="visits-header">
-               Previous Visits
-           </div>
-           <div class="visits-content">
-                <ul>
-                     {% for visit in visits|slice:"1:" %}
-                     <li>{{ visit.performed_by.name }} {{ visit.date }}</li>
-                     {% endfor %}
-                 </ul>
-           </div>
-       </div>
+        {% else %}
+        This encampment has never been visited
+        {% endif %}
+        {% endwith %}
+        <br/>
+        <div class="previous visits">
+                {% for visit in visits|slice:"1:" %}
+                {% if forloop.first %}
+                <div class="visits-header">
+                    Previous Visits
+                </div>
+                {% endif %}
+            <div class="visits-content">
+                <div class="previous-visit">
+                    <div class="date">{{ visit.date }}</div>
+                    <div class="spacer"></div>
+                    <div class="date-ago">{{ visit.date | ago }}</div>
+                    <div class="spacer"></div>
+                    <div class="performed-by">{{ visit.performed_by }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
     </div>
     <div class="tasks">
@@ -80,22 +137,31 @@
             <div>Tasks</div>
         </div>
         <div class="form">
-            <form method="post" action={% url 'task-create' %}>{% csrf_token %}
+            <form method="post" action="{% url 'task-create' %}">
+                {% csrf_token %}
                 {{ task_form.as_p }}
                 <input type="submit" value="Save new task">
             </form>
         </div>
         {% for task in open_tasks|slice:":3" %}
-            <div class="task open">
-                <h3>{{ task.title }}</h3>
-                <p>{{ task.details }}</p>
-                <form method="post" action={% url 'task-complete' pk=task.id %}>{% csrf_token %}
+        <div class="task open">
+            <h3>{{ task.title }}</h3>
+            <p>{{ task.details }}</p>
+            <form method="post" action="{% url 'task-complete' pk=task.id %}">
+                {% csrf_token %}
                 <input type="submit" value="Mark task completed">
-                </form>
-            </div>
+            </form>
+        </div>
         {% endfor %}
 
-        {{ completed_tasks | length }} completed tasks.
+        {{ completed_tasks | length }} completed tasks
+
+        {% for task in completed_tasks %}
+        <div class="task closed">
+            <h3>{{ task.title }}</h3>
+            <p>{{ task.details }}</p>
+        </div>
+        {% endfor %}
 
 
     </div>

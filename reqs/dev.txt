@@ -5,6 +5,7 @@
 #    pip-compile --no-annotate reqs/dev.in
 #
 appdirs==1.4.3
+appnope==0.1.0
 asgiref==3.2.7
 attrs==19.3.0
 backcall==0.1.0
@@ -39,6 +40,7 @@ flake8-print==3.1.4
 flake8-quotes==3.0.0
 flake8==3.7.9
 freezegun==0.3.15
+humanize==2.4.0
 idna==2.9
 ipython-genutils==0.2.0
 ipython==7.14.0
