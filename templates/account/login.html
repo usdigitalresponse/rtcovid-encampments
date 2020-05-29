@@ -8,7 +8,7 @@
     <div class="socialauth-prompt">
         {% for provider in socialaccount_providers %}
             <a title="{{provider.name}}" class="socialaccount_provider button {{provider.id}}"
- href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Sign in with {{provider.name}}</a>
+ href="{% provider_login_url provider.id process='login' %}">Sign in with {{provider.name}}</a>
         {% endfor %}
     </div>
     {% endif %}
