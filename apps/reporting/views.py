@@ -12,18 +12,29 @@ from django.views.generic.edit import BaseCreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
+from apps.reporting.forms import date_picker
+from apps.reporting.forms import ScheduleVisitForm
 from apps.reporting.forms import TaskForm
 from apps.reporting.models import Encampment
 from apps.reporting.models import Organization
 from apps.reporting.models import Region
 from apps.reporting.models import Report
+from apps.reporting.models import ScheduledVisit
 from apps.reporting.models import Task
 from apps.reporting.serializers import EncampmentSerializer
 from apps.reporting.serializers import OrganizationSerializer
 from apps.reporting.serializers import ReportSerializer
 
 
-class EncampmentListView(ListView):
+class ReportingBaseView:
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        if not "url_context" in context:
+            context["url_context"] = ""
+        return context
+
+
+class EncampmentListView(ReportingBaseView, ListView):
     model = Encampment
 
     def get_queryset(self):
@@ -78,7 +89,7 @@ class EncampmentTable(tables.Table):
     tasks = tables.Column(accessor="open_tasks.count")
 
 
-class EncampmentDetailView(DetailView):
+class EncampmentDetailView(ReportingBaseView, DetailView):
     model = Encampment
 
     def get_context_data(self, **kwargs):
@@ -95,6 +106,7 @@ class EncampmentDetailView(DetailView):
             "open_tasks": self.object.open_tasks(),
             "completed_tasks": self.object.completed_tasks(),
             "task_form": task_form,
+            "url_context": f"encampment={self.object.id}",
         }
         return {**context, **extra_context}
 
@@ -118,7 +130,19 @@ class CreateTask(BaseCreateView):
     model = Task
 
 
-class ReportListView(ListView):
+class ScheduleVisitCreateView(ReportingBaseView, CreateView):
+    model = ScheduledVisit
+
+    def get_form(self, form_class=None):
+        # if self.request.re
+        form = ScheduleVisitForm()
+        preset_encampment = self.request.GET.get("encampment")
+        if preset_encampment:
+            form.fields["encampment"].initial = preset_encampment
+        return form
+
+
+class ReportListView(ReportingBaseView, ListView):
     model = Report
 
     def get_queryset(self):
@@ -132,8 +156,16 @@ class ReportListView(ListView):
         return context
 
 
-class ReportCreateView(CreateView):
+class ReportCreateView(ReportingBaseView, CreateView):
     model = Report
+
+    def get_form(self, form_class=None):
+        form = super().get_form()
+        form.fields["date"].widget = date_picker()
+        preset_encampment = self.request.GET.get("encampment")
+        if preset_encampment:
+            form.fields["encampment"].initial = preset_encampment
+        return form
 
     fields = [
         "date",

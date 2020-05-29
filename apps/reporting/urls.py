@@ -35,4 +35,6 @@ urlpatterns = [
     path("reports/create", views.ReportCreateView.as_view(), name="report-create"),
     path("tasks/", views.CreateTask.as_view(), name="task-create"),
     path("tasks/<str:pk>/complete", views.CompleteTask.as_view(), name="task-complete"),
+    # Visits
+    path("visits/", views.ScheduleVisitCreateView.as_view(), name="visit-create"),
 ]

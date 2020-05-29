@@ -1,0 +1,23 @@
+{% extends "reporting/reporting_base.html" %}
+{% block content %}
+{{ form.media }}
+
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="fieldset">
+            {% for field in form %}
+            <div class="field">
+                {{ field.errors }}
+                {{ field.label_tag }}
+                <span class="field-input">
+                    {{ field }}
+                </span>
+            </div>
+            {% endfor %}
+        </fieldset>
+        <input style="margin-top: 20px" type="submit" class="button" value="Schedule">
+    </form>
+</div>
+
+{% endblock %}
