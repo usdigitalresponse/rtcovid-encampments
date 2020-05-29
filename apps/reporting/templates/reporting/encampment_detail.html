@@ -5,9 +5,12 @@
 
 
 {% block content %}
-<h2>{{ encampment.name }}</h2>
-<!-- TODO: get url for google maps right -->
-<a href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+<div class="detail-panel">
+    <h2>{{ encampment.name }}</h2>
+    <!-- TODO: get url for google maps right -->
+    <a class="button" href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+</div>
+
 <div class="infopanel">
     <div class="infonugget">
         <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
@@ -135,9 +138,9 @@
         <div class="tasks">
             <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
-            <div id="app">
+            <div id="app" class="show-on-desktop">
                 <div class="task-header">
-                    <div>Tasks</div>
+                    <div class="task-title">Tasks</div>
                     <div class="task-toggle open" v-if="open" v-on:click="toggle">
                         - Add
                     </div>
@@ -175,16 +178,16 @@
             </script>
             {% for task in open_tasks|slice:":3" %}
             <div class="task open">
-                <div class="tick">{% svg 'tick' %}</div>
-                <div>
+                <div class="task-icon tick show-on-desktop">{% svg 'tick' %}</div>
+                <div class="task-info">
                     <div class="title">{{ task.title }}</div>
                     <p>{{ task.details }}</p>
                     {% if user.is_staff %}
                     <form method="post" action="{% url 'task-complete' pk=task.id %}">
                         {% csrf_token %}
-                        <div style="display: flex; justify-content: space-between;">
-                            <input type="submit" class="button" value="Mark completed">
-                            <div>{{ task.created_at | ago }}</div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <input type="submit" class="button button-small" value="Mark completed">
+                            <div class="show-on-desktop">{{ task.created_at | ago }}</div>
                         </div>
                         <!-- todo: do we want to show something different if the user isn't staff? -->
                     </form>
@@ -193,19 +196,21 @@
             </div>
             {% endfor %}
 
-            {{ completed_tasks | length }} completed tasks
+            <details class="task-summary show-on-desktop" open>
+                <summary class="task-title">
+                    {{ completed_tasks | length }} Completed Task{{ completed_tasks | pluralize }}
+                </summary>
 
-            {% for task in completed_tasks %}
-            <div class="task closed">
-                <div class="tick">{% svg 'tick' %}</div>
-                <div>
-                    <div class="title">{{ task.title }}</div>
-                    <p>{{ task.details }}</p>
-                </div>
-            </div>
-            {% endfor %}
-
-
+                {% for task in completed_tasks %}
+                    <div class="task closed">
+                        <div class="task-icon tick show-on-desktop">{% svg 'tick' %}</div>
+                        <div class="task-info">
+                            <div class="title">{{ task.title }}</div>
+                            <p>{{ task.details }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </details>
         </div>
 
     </div>

@@ -431,15 +431,95 @@ body {
       }
     }
 
-  /* ===
-  Detail
+  /* ================================
+    Detail View
   */
+  .detail-panel {
+    padding: 0 25px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .main-panel {
-    padding-top: 50px;
+    padding: 25px 20px;
     display: flex;
+    flex-direction: column-reverse;
     width: 100%;
     justify-content: space-between;
+  }
+
+  .main-panel .tasks {
+    flex-basis: 100%;
+    margin: 0;
+  }
+
+  .main-panel .tasks .button {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .main-panel .task-info {
+    flex-basis: 100%;
+  }
+
+  .main-panel .task.closed {
+    display: none;
+  }
+
+  .main-panel .task-summary {
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .main-panel .task-summary .task-title {
+    margin: 20px 0 30px;
+    font-size: 14px;
+    line-height: 17px;
+    color: #888;
+  }
+
+  /* ================================
+    Detail Response
+  */
+
+  @media (min-width: 600px) {
+    .detail-panel {
+      display: flex;
+    }
+
+    .main-panel {
+      flex-direction: row;
+    }
+
+    .main-panel .tasks {
+      flex-basis: 300px;
+      margin-right: 20px;
+    }
+
+    .main-panel .task-header {
+      padding: 0 0 15px;
+      margin: 0 0 20px;
+      border-bottom: 1px solid #EEE;
+    }
+
+    .main-panel .task-title {
+      font-size: 18px;
+      font-weight: 300;
+    }
+
+    .main-panel .task-toggle {
+      font-weight: 300;
+    }
+
+    .main-panel .tasks .button {
+      padding: .5em 1.5em;
+      font-size: unset;
+    }
+
+    .main-panel .task.closed {
+      display: flex;
+    }  
   }
 
   .most-recent {
