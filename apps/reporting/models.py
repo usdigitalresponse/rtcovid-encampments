@@ -160,6 +160,13 @@ class ScheduledVisit(BaseModel):
 
 
 class Report(BaseModel):
+    class OccupancySizes(models.TextChoices):
+        XS = 'xs', '0-5'
+        S = 's', '5-10'
+        M = 'm', '10-20'
+        L = 'l', '20-50'
+        XL = 'xl', '50+'
+
     encampment = models.ForeignKey(
         Encampment, on_delete=models.CASCADE, related_name="reports"
     )
@@ -177,7 +184,12 @@ class Report(BaseModel):
         blank=True, help_text="Specify items & quantity"
     )
     food_delivered = models.TextField(blank=True, help_text="Specify items & quantity")
-    occupancy = pgfields.IntegerRangeField(null=True, verbose_name="People Living Here")
+    occupancy = models.CharField(
+        max_length=20,
+        choices=OccupancySizes.choices,
+        null=True,
+        verbose_name="People Living Here"
+    )
 
     talked_to = models.IntegerField(verbose_name="People Talked To")
     assessed = models.IntegerField(verbose_name="People Assessed for COVID")

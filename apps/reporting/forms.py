@@ -47,30 +47,6 @@ class ScheduleVisitForm(ModelForm):
 
 
 class ReportForm(ModelForm):
-    @staticmethod
-    def _occupancy_field():
-        ranges = [(0, 5), (6, 10), (11, 20), (21, 50), (50, None)]
-
-        def label(r):
-            if r[1] is None:
-                return f"{r[0]}+"
-            else:
-                return f"{r[0]}-{r[1]}"
-
-        choices = [("", "Choose one")] + [
-            (json.dumps(dict(lower=r[0], upper=r[1])), label(r)) for r in ranges
-        ]
-        return Select(choices=choices)
-
-    def is_valid(self):
-        self.data["occupancy_0"] = json.loads(self.data.get("occupancy") or "{}").get(
-            "lower"
-        )
-        self.data["occupancy_1"] = json.loads(self.data.get("occupancy") or "{}").get(
-            "upper"
-        )
-        super(ReportForm, self).is_valid()
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         form = self
@@ -85,7 +61,6 @@ class ReportForm(ModelForm):
             ],
             initial=None,
         )
-        form.fields["occupancy"].widget = self._occupancy_field()
         for _, field in form.fields.items():
             if isinstance(field, ChoiceField):
                 field.widget.attrs["class"] = "field-select"
