@@ -7,7 +7,9 @@ from apps.reporting.models import Task
 
 
 def date_picker():
-    return DateInput(attrs={"type": "date"})
+    return DateInput(
+        attrs={"type": "date", "class": "field-date", "placeholder": "YYYY-MM-DD"}
+    )
 
 
 class TaskForm(ModelForm):
@@ -27,6 +29,11 @@ class TaskForm(ModelForm):
 
 
 class ScheduleVisitForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["encampment"].widget.attrs["class"] = "field-select"
+        self.fields["organization"].widget.attrs["class"] = "field-select"
+
     class Meta:
         model = ScheduledVisit
         fields = ("encampment", "date", "organization")

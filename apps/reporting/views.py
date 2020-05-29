@@ -132,10 +132,10 @@ class CreateTask(BaseCreateView):
 
 class ScheduleVisitCreateView(ReportingBaseView, CreateView):
     model = ScheduledVisit
+    form_class = ScheduleVisitForm
 
     def get_form(self, form_class=None):
-        # if self.request.re
-        form = ScheduleVisitForm()
+        form = super().get_form(form_class=form_class)
         preset_encampment = self.request.GET.get("encampment")
         if preset_encampment:
             form.fields["encampment"].initial = preset_encampment
@@ -160,7 +160,7 @@ class ReportCreateView(ReportingBaseView, CreateView):
     model = Report
 
     def get_form(self, form_class=None):
-        form = super().get_form()
+        form = super().get_form(form_class=form_class)
         form.fields["date"].widget = date_picker()
         preset_encampment = self.request.GET.get("encampment")
         if preset_encampment:
