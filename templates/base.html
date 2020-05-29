@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Encampment Tracker</title>
+    <title>{{current_site.name}}</title>
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
 
@@ -506,7 +506,7 @@ body.dashboard .container {
 <div class="shell">
   <header class="shell-header">
     <div class="shell-header-start">
-      <h1><a href="{% url 'encampment-list' %}">ENCAMPMENT TRACKER</a></h1>
+      <h1><a href="{% url 'encampment-list' %}">{{current_site.name.upper}}</a></h1>
     </div>
 
     <nav class="inlinenav">

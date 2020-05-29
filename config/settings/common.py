@@ -77,6 +77,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "config.context_processors.current_site",
             ],
         },
     },
@@ -155,7 +156,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 STRONGHOLD_PUBLIC_URLS = (r"^/accounts/.+$",)
 
-# Local options
-LOCAL_CITY = "Oakland, CA"  # Used to focus geocoding requests
-LOCAL_LONGITUDE = -122.271  # Used to focus geocoding requests
-LOCAL_LATITUDE = 37.804  # Used to focus geocoding requests
+### Local options
+# Used to focus geocoding requests
+LOCAL_CITY = os.environ.get("LOCAL_CITY", "Oakland, CA")  
+LOCAL_LONGITUDE = float(os.environ.get("LOCAL_LONGITUDE", "-122.271"))
+LOCAL_LATITUDE = float(os.environ.get("LOCAL_LATITUDE", "37.804"))
