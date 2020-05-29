@@ -63,6 +63,10 @@ body {
   padding: 20px;
 }
 
+.layout-split {
+  display: block;
+}
+
 @media (min-width: 600px) {
   .show-on-desktop {
     display:unset;
@@ -70,6 +74,10 @@ body {
 
   .container {
     padding: 30px;
+  }
+
+  .layout-split {
+    display:flex;
   }
 }
 
@@ -242,44 +250,59 @@ body {
 }
 
 
+
 /* ================================
    Data Table
 */
 
-body.dashboard .container {
-  display: flex;
-}
 
-.table-nav {
-  min-width: 180px;
-  list-style-type: none;
-  padding: 0;
-  border-right: 1px solid #ccc;
-  padding-top: 35px;
-  font-weight: 300;
-  text-align: right;
-  margin-right: 40px;
-}
-.table-nav li {
-  padding-right: 40px;
-  margin-bottom: 20px;
-}
-.table-nav a { color: #888; }
-.table-nav a:hover { color: #333; }
-.table-nav .active {
-  border-right: 5px solid #063;
-}
-.table-nav li.active a { color: #333; }
-.table-nav li.active a:hover { color: #888; }
-.table-nav .nav-count {
-  display: inline-block;
-  border-radius: 20px;
-  background: #888;
-  color: #fff;
-  font-size: 10px;
-  padding: 3px 6px;
-  vertical-align: bottom;
-  margin-left: 5px;
+  .table-nav {
+    display:flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+  }
+  .table-nav a {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #888;
+  }
+  .table-nav a:hover { color: #333; }
+  .table-nav li.active a { color: #333; }
+
+
+@media (min-width: 600px) {
+  .table-nav {
+    display: initial;
+    min-width: 180px;
+    border-right: 1px solid #ccc;
+    padding-top: 35px;
+    font-weight: 300;
+    text-align: right;
+    margin-right: 40px;
+  }
+  .table-nav li {
+    padding-right: 40px;
+    margin-bottom: 20px;
+  }
+  .table-nav a {
+    display: initial;
+    padding: initial;
+  }
+  .table-nav .active {
+    border-right: 5px solid #063;
+  }
+  .table-nav li.active a:hover { color: #888; }
+  .table-nav .nav-count {
+    display: inline-block;
+    border-radius: 20px;
+    background: #888;
+    color: #fff;
+    font-size: 10px;
+    padding: 3px 6px;
+    vertical-align: bottom;
+    margin-left: 5px;
+  }
 }
 
 .datatable { width: 100%; }
