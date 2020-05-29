@@ -1,6 +1,7 @@
 from datetime import date
 
 import django_tables2 as tables
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
 from django.views.generic import DetailView
@@ -98,7 +99,12 @@ class EncampmentDetailView(DetailView):
         return {**context, **extra_context}
 
 
-class CompleteTask(SingleObjectMixin, View):
+class UserIsStaff(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class CompleteTask(UserIsStaff, SingleObjectMixin, View):
     model = Task
 
     def post(self, request, *args, **kwargs):

@@ -416,7 +416,30 @@ body.dashboard .container {
     background: #888888;
   }
 
-  .tasks > .header {
+  .task-toggle {
+    border-radius: 40px;
+    padding: 5px 15px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .task-toggle.open {
+    background: #E5E5E5;
+  }
+
+  .task-toggle.closed {
+    background: #006633;
+  }
+
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .tasks .form-buttons {
     display: flex;
     justify-content: space-between;
   }
@@ -426,6 +449,20 @@ body.dashboard .container {
     margin-bottom: 10px;
     padding: 22px;
     border-left: 3px solid;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .task .tick {
+    color: #CCCCCC;
+    margin-right: 1em;
+  }
+
+  .task.open .tick {
+    border: 3px dashed;
+    border-color: #CCCCCC;
+    border-radius: 10px;
+    padding: 5px;
   }
 
   .task.open {
@@ -476,13 +513,13 @@ body.dashboard .container {
     border-color: #CCCCCC;
   }
 
-  .task > h3 {
+  .task .title {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 800;
     font-style: normal;
   }
 
-  .task > p {
+  .task p {
     color: #888888;
     font-size: 14px;
     line-height: 17px;
@@ -498,6 +535,7 @@ body.dashboard .container {
 
   .tasks {
     flex-basis: 300px;
+    margin-right: 20px;
   }
 
 </style>

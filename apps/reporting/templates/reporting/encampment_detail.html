@@ -14,11 +14,13 @@
         <div class="infonugget-stat">{{ visits|length }}</div>
         <div class="infonugget-description"> Total Visits</div>
     </div>
+    {% if days_since_last_visit %}
     <div class="infonugget">
         <div class="infonugget-icon red">{% svg 'clock' %}</div>
         <div class="infonugget-stat">{{ days_since_last|default:"Never Visited"}}</div>
         <div class="infonugget-description">days since last visit</div>
     </div>
+    {% endif %}
     <div class="infonugget">
         <div class="infonugget-icon grey">{% svg 'warning' %}</div>
         <div class="infonugget-stat">{{ open_tasks|length }}</div>
@@ -113,12 +115,12 @@
         {% endwith %}
         <br/>
         <div class="previous visits">
-                {% for visit in visits|slice:"1:" %}
-                {% if forloop.first %}
-                <div class="visits-header">
-                    Previous Visits
-                </div>
-                {% endif %}
+            {% for visit in visits|slice:"1:" %}
+            {% if forloop.first %}
+            <div class="visits-header">
+                Previous Visits
+            </div>
+            {% endif %}
             <div class="visits-content">
                 <div class="previous-visit">
                     <div class="date">{{ visit.date }}</div>
@@ -130,43 +132,83 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="tasks">
+            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+            <div id="app">
+                <div class="task-header">
+                    <div>Tasks</div>
+                    <div class="task-toggle open" v-if="open" v-on:click="toggle">
+                        - Add
+                    </div>
+                    <div class="task-toggle closed" v-else v-on:click="toggle">
+                        + Add
+                    </div>
+                </div>
+                <div class="form" v-if="open">
+                    <form method="post" action="{% url 'task-create' %}">
+                        {% csrf_token %}
+                        {{ task_form.as_p }}
+                        <div class="form-buttons">
+                            <input type="submit" value="Save new task">
+                            <div v-on:click="toggle">Cancel</div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <script>
+    var app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#app',
+      data: {
+          open: false,
+      },
+      methods: {
+          toggle: function() {
+              this.open = !this.open;
+          }
+      }
+    });
+
+            </script>
+            {% for task in open_tasks|slice:":3" %}
+            <div class="task open">
+                <div class="tick">{% svg 'tick' %}</div>
+                <div>
+                    <div class="title">{{ task.title }}</div>
+                    <p>{{ task.details }}</p>
+                    {% if user.is_staff %}
+                    <form method="post" action="{% url 'task-complete' pk=task.id %}">
+                        {% csrf_token %}
+                        <div style="display: flex; justify-content: space-between;">
+                            <input type="submit" class="button" value="Mark completed">
+                            <div>{{ task.created_at | ago }}</div>
+                        </div>
+                        <!-- todo: do we want to show something different if the user isn't staff? -->
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            {{ completed_tasks | length }} completed tasks
+
+            {% for task in completed_tasks %}
+            <div class="task closed">
+                <div class="tick">{% svg 'tick' %}</div>
+                <div>
+                    <div class="title">{{ task.title }}</div>
+                    <p>{{ task.details }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
 
     </div>
-    <div class="tasks">
-        <div class="header">
-            <div>Tasks</div>
-        </div>
-        <div class="form">
-            <form method="post" action="{% url 'task-create' %}">
-                {% csrf_token %}
-                {{ task_form.as_p }}
-                <input type="submit" value="Save new task">
-            </form>
-        </div>
-        {% for task in open_tasks|slice:":3" %}
-        <div class="task open">
-            <h3>{{ task.title }}</h3>
-            <p>{{ task.details }}</p>
-            <form method="post" action="{% url 'task-complete' pk=task.id %}">
-                {% csrf_token %}
-                <input type="submit" value="Mark task completed">
-            </form>
-        </div>
-        {% endfor %}
-
-        {{ completed_tasks | length }} completed tasks
-
-        {% for task in completed_tasks %}
-        <div class="task closed">
-            <h3>{{ task.title }}</h3>
-            <p>{{ task.details }}</p>
-        </div>
-        {% endfor %}
 
 
-    </div>
-
-</div>
-
-
-{% endblock %}
+    {% endblock %}
