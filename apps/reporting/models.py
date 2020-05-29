@@ -107,6 +107,7 @@ class Encampment(BaseModel):
                 self.location,
                 lon=settings.LOCAL_LONGITUDE,
                 lat=settings.LOCAL_LATITUDE,
+                types=["address"],
             ).geojson()
             self.location_geom = GEOSGeometry(str(result["features"][0]["geometry"]))
         if not self.region:
