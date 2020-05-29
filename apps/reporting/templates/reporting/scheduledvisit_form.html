@@ -1,0 +1,33 @@
+{% extends "reporting/reporting_base.html" %}
+{% block content %}
+{{ form.media }}
+
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.encampment.errors }}
+                {{ form.encampment.label_tag }}
+                <div class="field-select-wrapper">
+                    {{ form.encampment }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.organization.errors }}
+                {{ form.organization.label_tag }}
+                <div class="field-select-wrapper">
+                    {{ form.organization }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.date.errors }}
+                {{ form.date.label_tag }}
+                {{ form.date }}
+            </div>
+        </fieldset>
+        <input style="margin-top: 20px" type="submit" class="button" value="Schedule">
+    </form>
+</div>
+
+{% endblock %}

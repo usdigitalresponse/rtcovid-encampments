@@ -77,7 +77,7 @@ class TestModels(TestCase):
         self.assertEqual(e1.last_report(), None)
 
         scheduled_visit = ScheduledVisit.objects.create(
-            encampment=e1, date=date.today()
+            encampment=e1, date=date.today(), organization=self.org
         )
         self.assertEqual(e1.next_visit(), scheduled_visit)
         self.assertEqual(e1.last_report(), None)

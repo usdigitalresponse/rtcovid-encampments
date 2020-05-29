@@ -1,7 +1,15 @@
+from django.forms import DateInput
 from django.forms import HiddenInput
 from django.forms import ModelForm
 
+from apps.reporting.models import ScheduledVisit
 from apps.reporting.models import Task
+
+
+def date_picker():
+    return DateInput(
+        attrs={"type": "date", "class": "field-date", "placeholder": "YYYY-MM-DD"}
+    )
 
 
 class TaskForm(ModelForm):
@@ -18,3 +26,15 @@ class TaskForm(ModelForm):
         widgets = {
             "encampment": HiddenInput(),
         }
+
+
+class ScheduleVisitForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["encampment"].widget.attrs["class"] = "field-select"
+        self.fields["organization"].widget.attrs["class"] = "field-select"
+
+    class Meta:
+        model = ScheduledVisit
+        fields = ("encampment", "date", "organization")
+        widgets = {"date": date_picker()}

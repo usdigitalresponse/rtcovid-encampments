@@ -153,6 +153,10 @@ class Task(BaseModel):
 class ScheduledVisit(BaseModel):
     encampment = models.ForeignKey(Encampment, on_delete=models.CASCADE)
     date = models.DateField()
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse("encampment-detail", kwargs={"pk": self.encampment.id})
 
 
 class Report(BaseModel):
