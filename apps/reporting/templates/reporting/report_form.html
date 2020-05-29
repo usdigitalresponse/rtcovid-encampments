@@ -4,95 +4,141 @@
 
 <div class="container">
 
-<fieldset class="fieldset">
-    <div class="field">
-      <div class="field-label">
-        <label>This is for this field</label>
-        <span class="field-instructions">Tents, vehicles, structures, etc.</span>
-      </div>
-      <input class="field-input" type="text" placeholder="Enter details">
-    </div>
-    <div class="field">
-      <label>This is for this field</label>
-      <input type="text" class="field-input" placeholder="Enter details">
-    </div>
-    <div class="field">
-      <label>This is for this field with a really long label</label>
-      <input type="text" class="field-input" placeholder="Enter details">
-    </div>
-</fieldset>
-
-<fieldset class="fieldset">
-    <div class="field">
-      <label>Text Field</label>
-      <input class="field-input" type="text" placeholder="Enter details">
-    </div>
-    <div class="field">
-      <label>Number field</label>
-      <input type="number" min="0" class="field-number" placeholder="Enter details">
-    </div>
-    <div class="field">
-      <label>Date Field</label>
-      <input type="date" min="2018-01-01" class="field-date" placeholder="YYYY-MM-DD">
-    </div>
-</fieldset>
-<fieldset class="fieldset">
-    <div class="field">
-      <label>This is for this field</label>
-      <textarea class="field-textarea" rows="3" type="text" placeholder="Enter details"></textarea>
-    </div>
-    <div class="field">
-      <label>This is for this field</label>
-      <textarea class="field-textarea" rows="3" type="text" placeholder="Enter details"></textarea>
-    </div>
-    <div class="field">
-      <label>This is for this field</label>
-      <div class="field-select-wrapper">
-      <select class="field-select">
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 3</option>
-
-      </select>
-      </div>
-    </div>
-</fieldset>
-</div>
-
-<style>
+    <style>
 #id_recorded_location_div_map {
   display: none;
   width: 100%;
   overflow: hidden;
 }
-</style>
-<form method="post">{% csrf_token %}
-    <!--{{ form.as_p }}-->
-    {% csrf_token %}
-    <fieldset class="fieldset">
-        <div class="field">
-            {{ form.encampment.errors }}
-            {{ form.encampment.label_tag }}
-            <div class="field-select-wrapper">
-                {{ form.encampment }}
-            </div>
-        </div>
-        <div class="field">
-            {{ form.date.errors }}
-            {{ form.date.label_tag }}
-            {{ form.date }}
-        </div>
-        <div class="field">
-            {{ form.performed_by.errors }}
-            {{ form.performed_by.label_tag }}
-            <div class="field-select-wrapper">
-                {{ form.performed_by }}
-            </div>
-        </div>
-    </fieldset>
-    <input style="margin-top: 20px" type="submit" class="button" value="Schedule">
-</form>
 
-    <input type="submit" value="Save">
-</form>
+
+    </style>
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.encampment.errors }}
+                {{ form.encampment.label_tag }}
+                <div class="field-select-wrapper">
+                    {{ form.encampment }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.date.errors }}
+                {{ form.date.label_tag }}
+                {{ form.date }}
+            </div>
+            <div class="field">
+                {{ form.performed_by.errors }}
+                {{ form.performed_by.label_tag }}
+                <div class="field-select-wrapper">
+                    {{ form.performed_by }}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.type_of_setup.errors }}
+                <div class="field-label">
+                    {{ form.type_of_setup.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.type_of_setup.help_text }}
+                </span>
+                </div>
+                {{ form.type_of_setup }}
+            </div>
+            <div class="field">
+                {{ form.occupancy.errors }}
+                {{ form.occupancy.label_tag }}
+                <div class="field-select-wrapper">
+                    {{ form.occupancy }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.talked_to.errors }}
+                {{ form.talked_to.label_tag }}
+                {{ form.talked_to }}
+            </div>
+        </fieldset>
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.supplies_delivered.errors }}
+                <div class="field-label">
+                    {{ form.supplies_delivered.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.supplies_delivered.help_text }}
+                </span>
+                </div>
+                {{ form.supplies_delivered }}
+            </div>
+            <div class="field">
+                {{ form.food_delivered.errors }}
+                <div class="field-label">
+                    {{ form.food_delivered.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.food_delivered.help_text }}
+                </span>
+                </div>
+                {{ form.food_delivered }}
+            </div>
+        </fieldset>
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.education_provided.errors }}
+                <div class="field-label">
+                    {{ form.education_provided.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.education_provided.help_text }}
+                </span>
+                </div>
+                <div class="field-select-wrapper">
+                    {{ form.education_provided }}
+                </div>
+            </div>
+            <div class="field">
+                {{ form.assessed.errors }}
+                <div class="field-label">
+                    {{ form.assessed.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.assessed.help_text }}
+                </span>
+                </div>
+                {{ form.assessed }}
+            </div>
+            <div class="field">
+                {{ form.assessed_asymptomatic.errors }}
+                <div class="field-label">
+                    {{ form.assessed_asymptomatic.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.assessed_asymptomatic.help_text }}
+                </span>
+                </div>
+                {{ form.assessed_asymptomatic }}
+            </div>
+        </fieldset>
+        <fieldset class="fieldset">
+            <div class="field">
+                {{ form.needs.errors }}
+                <div class="field-label">
+                    {{ form.needs.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.needs.help_text }}
+                </span>
+                </div>
+                {{ form.needs }}
+            </div>
+            <div class="field">
+                {{ form.notes.errors }}
+                <div class="field-label">
+                    {{ form.notes.label_tag }}
+                    <span class="field-instructions">
+                    {{ form.notes.help_text }}
+                </span>
+                </div>
+                {{ form.notes }}
+            </div>
+        </fieldset>
+        <input style="margin-top: 20px" type="submit" class="button" value="Save">
+    </form>
+</div>
 {% endblock %}

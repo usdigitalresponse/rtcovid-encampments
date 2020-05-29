@@ -2,7 +2,6 @@ from datetime import date
 
 import django_tables2 as tables
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.forms import ModelChoiceField
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
 from django.views.generic import DetailView
@@ -13,7 +12,7 @@ from django.views.generic.edit import BaseCreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
-from apps.reporting.forms import date_picker
+from apps.reporting.forms import ReportForm
 from apps.reporting.forms import ScheduleVisitForm
 from apps.reporting.forms import TaskForm
 from apps.reporting.models import Encampment
@@ -159,33 +158,70 @@ class ReportListView(ReportingBaseView, ListView):
 
 class ReportCreateView(ReportingBaseView, CreateView):
     model = Report
+    form_class = ReportForm
+
+    # @staticmethod
+    # def _occupancy_field():
+    #    ranges = [(0, 5), (6, 10), (11, 20), (21, 50), (50, None)]
+
+    #    def label(r):
+    #        if r[1] is None:
+    #            return f'{r[0]}+'
+    #        else:
+    #            return f'{r[0]}-{r[1]}'
+
+    #    choices = [('', 'Choose one')] + [(dict(lower=r[0], upper=r[1]), label(r)) for r in ranges]
+    #    return Select(choices=choices)
 
     def get_form(self, form_class=None):
-        form = super().get_form(form_class=form_class)
-        form.fields["date"].widget = date_picker()
-        for _, field in form.fields.items():
-            if isinstance(field, ModelChoiceField):
-                field.widget.attrs["class"] = "field-select"
-
+        form = super().get_form(form_class)
         preset_encampment = self.request.GET.get("encampment")
         if preset_encampment:
             form.fields["encampment"].initial = preset_encampment
         return form
 
-    fields = [
-        "date",
-        "encampment",
-        "recorded_location",
-        "performed_by",
-        "supplies_delivered",
-        "food_delivered",
-        "occupancy",
-        "talked_to",
-        "assessed",
-        "assessed_asymptomatic",
-        "needs",
-        "notes",
-    ]
+
+#    #    form = super().get_form(form_class=form_class)
+#    print(form.errors)
+#    form.fields["date"].widget = date_picker()
+#    form.fields["education_provided"] = ChoiceField(
+#        choices=[('', 'Choose one'), ("verbal", "Verbal"), ("flyer", "Flyer"), ("none", "None")], initial=None)
+#    form.fields["occupancy"].widget = self._occupancy_field()
+#    for _, field in form.fields.items():
+#        if isinstance(field, ChoiceField):
+#            field.widget.attrs["class"] = "field-select"
+#            field.empty_label = "Choose one"
+#        elif isinstance(field, IntegerField):
+#            field.widget.attrs["class"] = "field-number"
+#            field.widget.attrs["placeholder"] = "Enter a number"
+#        else:
+#            field.widget.attrs["class"] = "field-input"
+#            field.widget.attrs["placeholder"] = "Enter details"
+
+#    form.fields["supplies_delivered"].widget.attrs['placeholder'] = "Enter details or leave blank"
+#    form.fields["food_delivered"].widget.attrs['placeholder'] = "Enter details or leave blank"
+
+#    preset_encampment = self.request.GET.get("encampment")
+#    if preset_encampment:
+#        form.fields["encampment"].initial = preset_encampment
+#    return form
+
+# fields = [
+#    "date",
+#    "encampment",
+#    "type_of_setup",
+#    "education_provided",
+#    #"recorded_location",
+#    "performed_by",
+#    "supplies_delivered",
+#    "food_delivered",
+#    "occupancy",
+#    "talked_to",
+#    "assessed",
+#    "assessed_asymptomatic",
+#    "needs",
+#    "notes",
+# ]
 
 
 # API views. Maybe delete.
