@@ -158,6 +158,6 @@ STRONGHOLD_PUBLIC_URLS = (r"^/accounts/.+$",)
 
 ### Local options
 # Used to focus geocoding requests
-LOCAL_CITY = os.environ.get("LOCAL_CITY", "Oakland, CA")  
+LOCAL_CITY = os.environ.get("LOCAL_CITY", "Oakland, CA")
 LOCAL_LONGITUDE = float(os.environ.get("LOCAL_LONGITUDE", "-122.271"))
 LOCAL_LATITUDE = float(os.environ.get("LOCAL_LATITUDE", "37.804"))
