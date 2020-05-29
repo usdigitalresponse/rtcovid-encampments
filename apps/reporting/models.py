@@ -7,7 +7,6 @@ from django.conf import settings
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse_lazy as reverse
 from django.utils import timezone
@@ -161,11 +160,11 @@ class ScheduledVisit(BaseModel):
 
 class Report(BaseModel):
     class OccupancySizes(models.TextChoices):
-        XS = 'xs', '0-5'
-        S = 's', '5-10'
-        M = 'm', '10-20'
-        L = 'l', '20-50'
-        XL = 'xl', '50+'
+        XS = "xs", "0-5"
+        S = "s", "5-10"
+        M = "m", "10-20"
+        L = "l", "20-50"
+        XL = "xl", "50+"
 
     encampment = models.ForeignKey(
         Encampment, on_delete=models.CASCADE, related_name="reports"
@@ -188,7 +187,7 @@ class Report(BaseModel):
         max_length=20,
         choices=OccupancySizes.choices,
         null=True,
-        verbose_name="People Living Here"
+        verbose_name="People Living Here",
     )
 
     talked_to = models.IntegerField(verbose_name="People Talked To")

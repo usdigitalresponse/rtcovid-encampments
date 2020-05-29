@@ -160,19 +160,6 @@ class ReportCreateView(ReportingBaseView, CreateView):
     model = Report
     form_class = ReportForm
 
-    # @staticmethod
-    # def _occupancy_field():
-    #    ranges = [(0, 5), (6, 10), (11, 20), (21, 50), (50, None)]
-
-    #    def label(r):
-    #        if r[1] is None:
-    #            return f'{r[0]}+'
-    #        else:
-    #            return f'{r[0]}-{r[1]}'
-
-    #    choices = [('', 'Choose one')] + [(dict(lower=r[0], upper=r[1]), label(r)) for r in ranges]
-    #    return Select(choices=choices)
-
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         preset_encampment = self.request.GET.get("encampment")
