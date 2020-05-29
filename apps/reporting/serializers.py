@@ -1,4 +1,3 @@
-from drf_extra_fields.fields import IntegerRangeField
 from drf_extra_fields.geo_fields import PointField
 from rest_framework import serializers
 
@@ -9,7 +8,6 @@ from apps.reporting.models import Report
 
 class ReportSerializer(serializers.ModelSerializer):
     recorded_location = PointField()
-    occupancy = IntegerRangeField()
 
     class Meta:
         model = Report

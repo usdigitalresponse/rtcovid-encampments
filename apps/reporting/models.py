@@ -7,7 +7,6 @@ from django.conf import settings
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.postgres import fields as pgfields
 from django.db import models
 from django.urls import reverse_lazy as reverse
 from django.utils import timezone
@@ -160,30 +159,50 @@ class ScheduledVisit(BaseModel):
 
 
 class Report(BaseModel):
+    class OccupancySizes(models.TextChoices):
+        XS = "xs", "0-5"
+        S = "s", "5-10"
+        M = "m", "10-20"
+        L = "l", "20-50"
+        XL = "xl", "50+"
+
     encampment = models.ForeignKey(
         Encampment, on_delete=models.CASCADE, related_name="reports"
     )
 
-    type_of_setup = models.CharField(max_length=100)
-    performed_by = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    date = models.DateField()
+    type_of_setup = models.CharField(max_length=100, help_text="Tents, vehicles, etc.")
+    performed_by = models.ForeignKey(
+        Organization, on_delete=models.CASCADE, verbose_name="Visiting Organization"
+    )
+    date = models.DateField(verbose_name="Date Visited")
     recorded_location = PointField(null=True, srid=4326)
 
     visit = models.ForeignKey(ScheduledVisit, null=True, on_delete=models.SET_NULL)
 
-    supplies_delivered = models.TextField(blank=True)
-    food_delivered = models.TextField(blank=True)
-    occupancy = pgfields.IntegerRangeField(null=True)
+    supplies_delivered = models.TextField(
+        blank=True, help_text="Specify items & quantity"
+    )
+    food_delivered = models.TextField(blank=True, help_text="Specify items & quantity")
+    occupancy = models.CharField(
+        max_length=20,
+        choices=OccupancySizes.choices,
+        null=True,
+        verbose_name="People Living Here",
+    )
 
-    talked_to = models.IntegerField()
-    assessed = models.IntegerField()
-    assessed_asymptomatic = models.IntegerField()
+    talked_to = models.IntegerField(verbose_name="People Talked To")
+    assessed = models.IntegerField(verbose_name="People Assessed for COVID")
+    assessed_asymptomatic = models.IntegerField(
+        verbose_name="People Assessed for COVID and Asymptomatic"
+    )
     # Looking through the sheet, we probably to suggest "verbal", "flyer", "none", "declined" but allow free text
     # if neither fits.
-    education_provided = models.CharField(max_length=100)
+    education_provided = models.CharField(
+        max_length=100, verbose_name="COVID Education Provided"
+    )
 
-    needs = models.TextField(blank=True)
-    notes = models.TextField(blank=True)
+    needs = models.TextField(blank=True, verbose_name="Outstanding Needs")
+    notes = models.TextField(blank=True, verbose_name="Other Notes")
 
     @classmethod
     def last_n(cls, days: int):
