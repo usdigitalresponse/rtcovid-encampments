@@ -15,7 +15,7 @@
         <!-- TODO: context aware coloring -->
         <div class="infonugget-icon orange">{% svg 'tick' %}</div>
         <div class="infonugget-stat">{{ pending_tasks }}</div>
-        <div class="infonugget-description">tasks pending</div>
+        <div class="infonugget-description">tasks<br> pending</div>
     </div>
 <div class="infonugget">
   <div class="infonugget-icon grey">{% svg 'calendar' %}</div>
@@ -28,7 +28,7 @@
   <div class="infonugget-description">visits in last<br> 31 days</div>
 </div>
 </div>
-<div class="container">
+<div class="container layout-split">
     <ul class="table-nav">
       <li class="{% if nav_context == '' %}active{% endif %}"><a href="{% url 'encampment-list' %}">All Encampments</a></li>
       <li class="{% if nav_context == delayed %}active{% endif %}"><a href="{% url 'encampment-list-filtered' 'delayed' %}">Not Visited <span class="nav-count">3</span></a></li>
