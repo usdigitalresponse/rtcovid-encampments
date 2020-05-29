@@ -144,16 +144,6 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"  # links should use HTTPS
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5  # Timeout after this many failed attempts
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900  # Duration of timeout (seconds)
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "APP": {
-            "client_id": os.environ.get("GOOGLE_CLIENT_ID", ""),
-            "secret": os.environ.get("GOOGLE_SECRET", ""),
-            "key": os.environ.get("GOOGLE_KEY", ""),
-        }
-    }
-}
-
 STRONGHOLD_PUBLIC_URLS = (r"^/accounts/.+$",)
 
 ### Local options
