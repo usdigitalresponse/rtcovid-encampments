@@ -67,18 +67,24 @@
                         <p>{{ most_recent.talked_to }}</p>
                     </div>
                 </div>
+                {% if most_recent.supplies_delivered or most_recent.food_delivered %}
                 <div class="visit-info">
                     <h2>Deliveries</h2>
                     <div class="spacer"></div>
+                    {% if most_recent.supplies_delivered %}
                     <div class="visit-detail">
                         <h3>Supplies Delivered</h3>
                         <p>{{ most_recent.supplies_delivered }}</p>
                     </div>
+                    {% endif %}
+                    {% if most_recent.food_delivered %}
                     <div class="visit-detail">
                         <h3>Food Delivered</h3>
                         <p>{{ most_recent.food_delivered }}</p>
                     </div>
+                    {% endif %}
                 </div>
+                {% endif %}
                 <div class="visit-info">
                     <h2>Covid</h2>
                     <div class="spacer"></div>
@@ -95,19 +101,24 @@
                         <p>{{ most_recent.assessed_asymptomatic }}</p>
                     </div>
                 </div>
+                {% if most_recent.needs or most_recent.notes %}
                 <div class="visit-info">
                     <h2>Actions</h2>
                     <div class="spacer"></div>
+                    {% if most_recent.needs %}
                     <div class="visit-detail">
                         <h3>Outstanding Needs</h3>
                         <p>{{ most_recent.needs }}</p>
                     </div>
+                    {% endif %}
+                    {% if most_recent.notes %}
                     <div class="visit-detail">
                         <h3>Notes / next steps</h3>
                         <p>{{ most_recent.notes }}</p>
                     </div>
+                    {% endif %}
                 </div>
-
+                {% endif %}
             </div>
         </div>
         {% else %}
