@@ -146,6 +146,8 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 900  # Duration of timeout (seconds)
 
 STRONGHOLD_PUBLIC_URLS = (r"^/accounts/.+$",)
 
+SOCIALACCOUNT_PROVIDERS = {"google": {"SCOPE": ["profile", "email",],}}
+
 ### Local options
 # Used to focus geocoding requests
 LOCAL_CITY = os.environ.get("LOCAL_CITY", "Oakland, CA")
