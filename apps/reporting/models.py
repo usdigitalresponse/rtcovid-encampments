@@ -70,7 +70,7 @@ class Encampment(BaseModel):
         max_length=250,
         help_text="An intersection or address. Adding a city/state can help accuracy.",
     )
-    location_geom = PointField(srid=4326)
+    location_geom = PointField(srid=4326, blank=True)
     region = models.ForeignKey("Region", null=True, on_delete=models.PROTECT)
 
     def open_tasks(self):
@@ -107,6 +107,7 @@ class Encampment(BaseModel):
                 self.location,
                 lon=settings.LOCAL_LONGITUDE,
                 lat=settings.LOCAL_LATITUDE,
+                types=["address"],
             ).geojson()
             self.location_geom = GEOSGeometry(str(result["features"][0]["geometry"]))
         if not self.region:

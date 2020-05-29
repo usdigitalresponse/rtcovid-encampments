@@ -8,7 +8,7 @@
 <div class="detail-panel">
     <h2>{{ encampment.name }}</h2>
     <!-- TODO: get url for google maps right -->
-    <a class="button" href="https://www.google.com/maps/dir/lat={{ object.location_geom.x }}">Get Directions</a>
+    <a class="button" href="https://www.google.com/maps/search/?api=1&query={{ object.location_geom.y }},{{object.location_geom.x}}">Get Directions</a>
 </div>
 
 <div class="infopanel">
