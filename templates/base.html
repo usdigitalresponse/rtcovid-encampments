@@ -347,6 +347,10 @@ body {
       padding: 0;
     }
 
+    .fieldset + fieldset {
+      margin-top: 20px;
+    }
+
      @media (min-width: 600px) {
        .fieldset {
         padding: 15px 20px;
@@ -361,21 +365,40 @@ body {
       border-top: 1px solid #FFF;
     }
     .field > label {
+      align-self: flex-start;
+      padding-block-start: .8em;
       font-size: 14px;
       color: #888;
     }
-    .field-input {
+    .field-input, .field-number, .field-date, .field-textarea, .field-select {
       width: 100%;
       padding: 5px 0;
       background-color: inherit;
       border: 0;
       font-size: 16px;
+      -webkit-appearance: none;
+      appearance: none;
     }
+
     .field-input:focus {
       background-color: #FFF;
     }
     .field-input::placeholder {
       color: #CCC;
+    }
+
+    .field-select-wrapper {
+      position:relative;
+      width: 100%;
+    }
+    .field-select-wrapper:after {
+      content: "▼";
+      position: absolute;
+      top: 6px;
+      right: 5px;
+      pointer-events: none;
+      color: #999;
+      font-size: 1em;
     }
 
     @media (min-width: 600px) {
@@ -393,10 +416,18 @@ body {
        flex-shrink: 0;
      }
 
-      .field-input {
+      .field-input, .field-number, .field-date, .field-textarea, .field-select {
         padding: 10px;
         border: 1px solid #EEE;
         background-color: #FFF;
+      }
+      .field-number, .field-date {
+          width: 180px;
+      }
+
+      .field-select-wrapper:after {
+        top: 12px;
+        right: 15px;
       }
     }
 
