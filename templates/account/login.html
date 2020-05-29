@@ -1,0 +1,39 @@
+{% extends "account/account_base.html" %}
+{% load account socialaccount %}
+
+{% block content %}
+{% get_providers as socialaccount_providers %}
+<div class="auth">
+    {% if socialaccount_providers %}
+    <div class="socialauth-prompt">
+        {% for provider in socialaccount_providers %}
+            <a title="{{provider.name}}" class="socialaccount_provider button {{provider.id}}"
+ href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">Sign in with {{provider.name}}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <p style="text-align: center;">or</p>
+
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    <p>{{form.non_field_errors}}{{ form.login.errors.as_text }}{{ form.password.errors.as_text }}</p>
+    <fieldset class="fieldset">
+        <div class="field">
+          <label>Email Address</label>
+          <input class="field-input" name="login" type="text" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" name="password" class="field-input">
+        </div>
+    </fieldset>
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <div class="action">
+        <button class="button" type="submit">Sign In</button>
+    </div>
+    </form>
+</div>
+{% endblock %}
