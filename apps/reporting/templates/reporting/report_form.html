@@ -64,7 +64,32 @@
 }
 </style>
 <form method="post">{% csrf_token %}
-    {{ form.as_p }}
+    <!--{{ form.as_p }}-->
+    {% csrf_token %}
+    <fieldset class="fieldset">
+        <div class="field">
+            {{ form.encampment.errors }}
+            {{ form.encampment.label_tag }}
+            <div class="field-select-wrapper">
+                {{ form.encampment }}
+            </div>
+        </div>
+        <div class="field">
+            {{ form.date.errors }}
+            {{ form.date.label_tag }}
+            {{ form.date }}
+        </div>
+        <div class="field">
+            {{ form.performed_by.errors }}
+            {{ form.performed_by.label_tag }}
+            <div class="field-select-wrapper">
+                {{ form.performed_by }}
+            </div>
+        </div>
+    </fieldset>
+    <input style="margin-top: 20px" type="submit" class="button" value="Schedule">
+</form>
+
     <input type="submit" value="Save">
 </form>
 {% endblock %}

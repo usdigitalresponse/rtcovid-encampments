@@ -2,6 +2,7 @@ from datetime import date
 
 import django_tables2 as tables
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.forms import ModelChoiceField
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView
 from django.views.generic import DetailView
@@ -162,6 +163,10 @@ class ReportCreateView(ReportingBaseView, CreateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
         form.fields["date"].widget = date_picker()
+        for _, field in form.fields.items():
+            if isinstance(field, ModelChoiceField):
+                field.widget.attrs["class"] = "field-select"
+
         preset_encampment = self.request.GET.get("encampment")
         if preset_encampment:
             form.fields["encampment"].initial = preset_encampment
