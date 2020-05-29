@@ -1,0 +1,19 @@
+{% extends "account/account_base.html" %}
+{% load account socialaccount %}
+
+{% block content %}
+{% get_providers as socialaccount_providers %}
+<div class="auth">
+    <p style="text-align: center;">Are you sure you want to sign out?</p>
+
+    <form class="login" method="POST" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <div class="action">
+        <button class="button" type="submit">Log Out</button>
+    </div>
+    </form>
+</div>
+{% endblock %}
