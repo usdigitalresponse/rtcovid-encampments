@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{current_site.name}}</title>
 </head>
 <body class="{% block bodyclass %}{% endblock %}">
@@ -364,12 +365,24 @@ body {
     .field + .field {
       border-top: 1px solid #FFF;
     }
-    .field > label {
+    .field > label, .field-label {
       align-self: flex-start;
       padding-block-start: .8em;
       font-size: 14px;
       color: #888;
     }
+
+    .field-label {
+      display:flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .field-instructions {
+      font-size: 12px;
+    }
+
     .field-input, .field-number, .field-date, .field-textarea, .field-select {
       width: 100%;
       padding: 5px 0;
@@ -411,7 +424,7 @@ body {
         border-top: 0;
       }
 
-     .field > label {
+     .field > label, .field-label {
        flex-basis: 200px;
        flex-shrink: 0;
      }
