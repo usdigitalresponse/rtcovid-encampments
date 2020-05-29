@@ -497,6 +497,10 @@ body {
     color: #888;
   }
 
+  .main-panel .visits-header {
+    display: none;
+  }
+
   /* ================================
     Detail Response
   */
@@ -532,20 +536,35 @@ body {
 
     .main-panel .tasks .button {
       padding: .5em 1.5em;
-      font-size: unset;
+    }
+
+    .main-panel .tasks .button + div {
+      font-size: 12px;
+      line-height: 14px;
+      color: #888;
     }
 
     .main-panel .task.closed {
       display: flex;
     }  
+
+    .main-panel .most-recent {
+      margin: 0;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .main-panel .visits-header {
+      display: flex;
+    }
   }
 
   .most-recent {
     display: flex;
+    margin: 30px 0 0;
   }
 
   .visits-header {
-    width: 183px;
     color: white;
     height: 39px;
     border-radius: 0px 4px 4px 0px;
@@ -553,9 +572,10 @@ body {
     display: flex;
     align-items: center;
     text-transform: uppercase;
-    padding-right: 17px;
+    padding: 0 20px;
     justify-content: flex-end;
-    margin-right: 30px;
+    margin: 0 30px 0 -20px;
+    white-space: nowrap;
   }
 
   .visit-panel > .most-recent > .visits-header {
@@ -627,40 +647,130 @@ body {
   }
 
   .date-bar {
-    display: flex;
+    display: inline-flex;
+    margin: 0 0 20px;
+  }
+
+  .date-bar > div {
+    color: #888;
+  }
+
+  .date-bar > div:first-child {
+    color: #333;
+  }
+
+  @media (min-width: 600px) {
+    .date-bar {
+      display: flex;
+      margin: 0 0 20px;
+    }
+
+    .date-bar > div {
+      font-size: 24px;
+      line-height: 29px;
+    }
+
+    .date-bar > .spacer:last-child {
+      display: none;
+    }
+  }
+
+  .performed-by {
+    display: inline-flex;
+    margin: 0 0 20px -4px;
+    color: #888;
+  }
+
+  @media (min-width: 600px) {
+    .performed-by {
+      margin: 0 0 20px;
+      font-size: 18px;
+      line-height: 21px;
+      color: #333;
+    }
+
+    .performed-by .spacer {
+      display: none;
+    }
   }
 
   .previous-visit {
     display: flex;
   }
 
+  .visits-content {
+    width: 100%;
+  }
+
   .visit-info {
     display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
+  }
+
+  .visit-info > h2 {
+    color: #999;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: uppercase;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #EEE;
   }
 
   .visit-detail {
     display: flex;
-    flex-direction: column;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-  .visit-info > h2 {
-    color: #999888;
-    font-size: 14px;
-    font-weight: normal;
-    width: 100px;
+    flex-direction: row;
+    align-items: start;
   }
 
   .visit-detail > h3 {
-    color: #999999;
+    width: 33.334%;
+    margin: 10px 10px 10px 0;
+    color: #999;
     font-size: 14px;
     font-weight: normal;
+    text-transform: uppercase;
   }
 
+  .visit-detail > p {
+    margin: 10px 0 10px 10px;
+  }
+
+  @media (min-width: 600px) {
+    .visit-info {
+      flex-direction: row;
+      margin: 0 0 30px;
+    }
+
+    .visit-info > h2 {
+      margin: 0;
+      padding: 0 20px 0 0;
+      border-bottom: none;
+      text-align: right;
+      width: 100px;
+    }
+
+    .visit-detail {
+      flex-direction: column;
+      padding: 0 30px;
+    }
+
+    .visit-detail > h3 {
+      width: 100%;
+    }
+
+    .visit-detail > h3 {
+      width: 100%;
+      margin: 0 0 20px 0;
+    }
+  
+    .visit-detail > p {
+      margin: 0;
+    }
+  }
+  
   .task.closed {
-    border-color: #CCCCCC;
+    border-color: #CCC;
   }
 
   .task .title {

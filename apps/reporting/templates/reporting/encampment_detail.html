@@ -44,9 +44,11 @@
                     <div>{{ most_recent.date }}</div>
                     <div class="spacer"></div>
                     <div>{{ most_recent.date | ago }}</div>
+                    <div class="spacer"></div>
                 </div>
                 <div class="performed-by">
-                    {{ most_recent.performed_by }}
+
+                    <div>{{ most_recent.performed_by }}</div>
                 </div>
 
                 <div class="visit-info">
@@ -75,10 +77,6 @@
                     <div class="visit-detail">
                         <h3>Food Delivered</h3>
                         <p>{{ most_recent.food_delivered }}</p>
-                    </div>
-                    <div class="visit-detail">
-                        <h3>Talked to</h3>
-                        <p>{{ most_recent.talked_to }}</p>
                     </div>
                 </div>
                 <div class="visit-info">
