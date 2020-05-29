@@ -1,11 +1,8 @@
-import json
-
 from django.forms import ChoiceField
 from django.forms import DateInput
 from django.forms import HiddenInput
 from django.forms import IntegerField
 from django.forms import ModelForm
-from django.forms import Select
 
 from apps.reporting.models import Report
 from apps.reporting.models import ScheduledVisit
