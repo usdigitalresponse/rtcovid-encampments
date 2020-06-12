@@ -33,12 +33,16 @@
 
 <div class="main-panel">
     <div class="visit-panel">
+      {% if not visits %}
+      This encampment has never been visited
+      {% else %}
         {% with visits|first as most_recent %}
         {% if most_recent %}
         <div class="most-recent visits">
             <div class="visits-header">
                 Most Recent Visit
             </div>
+            <div class="visits-container">
             <div class="visits-content">
                 <div class="date-bar">
                     <div>{{ most_recent.date }}</div>
@@ -120,20 +124,21 @@
                 </div>
                 {% endif %}
             </div>
+            </div>
         </div>
         {% else %}
-        This encampment has never been visited
-        {% endif %}
+               {% endif %}
         {% endwith %}
         <br/>
         <div class="previous visits">
-            {% for visit in visits|slice:"1:" %}
-            {% if forloop.first %}
             <div class="visits-header">
                 Previous Visits
             </div>
-            {% endif %}
+            <div class="visits-container">
+            {% for visit in visits|slice:"1:" %}
             <div class="visits-content">
+              <details>
+                <summary>
                 <div class="previous-visit">
                     <div class="date">{{ visit.date }}</div>
                     <div class="spacer"></div>
@@ -141,9 +146,84 @@
                     <div class="spacer"></div>
                     <div class="performed-by">{{ visit.performed_by }}</div>
                 </div>
+                </summary>
+                <div>
+                  <div class="visit-info">
+                    <h2>Status</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Type of setup</h3>
+                        <p>{{ visit.type_of_setup }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Living here</h3>
+                        <p>{{ visit.get_occupancy_display }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Talked to</h3>
+                        <p>{{ visit.talked_to }}</p>
+                    </div>
+                </div>
+                {% if visit.supplies_delivered or visit.food_delivered %}
+                <div class="visit-info">
+                    <h2>Deliveries</h2>
+                    <div class="spacer"></div>
+                    {% if visit.supplies_delivered %}
+                    <div class="visit-detail">
+                        <h3>Supplies Delivered</h3>
+                        <p>{{ visit.supplies_delivered }}</p>
+                    </div>
+                    {% endif %}
+                    {% if visit.food_delivered %}
+                    <div class="visit-detail">
+                        <h3>Food Delivered</h3>
+                        <p>{{ visit.food_delivered }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                <div class="visit-info">
+                    <h2>Covid</h2>
+                    <div class="spacer"></div>
+                    <div class="visit-detail">
+                        <h3>Education</h3>
+                        <p>{{ visit.education_provided }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Assessed</h3>
+                        <p>{{ visit.assessed }}</p>
+                    </div>
+                    <div class="visit-detail">
+                        <h3>Asymptomatic</h3>
+                        <p>{{ visit.assessed_asymptomatic }}</p>
+                    </div>
+                </div>
+                {% if visit.needs or visit.notes %}
+                <div class="visit-info">
+                    <h2>Actions</h2>
+                    <div class="spacer"></div>
+                    {% if visit.needs %}
+                    <div class="visit-detail">
+                        <h3>Outstanding Needs</h3>
+                        <p>{{ visit.needs }}</p>
+                    </div>
+                    {% endif %}
+                    {% if visit.notes %}
+                    <div class="visit-detail">
+                        <h3>Notes / next steps</h3>
+                        <p>{{ visit.notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                </div>
             </div>
+              </details>
             {% endfor %}
+            </div>
         </div>
+  {% endif %}
     </div>
     <!-- end visits panel -->
 
