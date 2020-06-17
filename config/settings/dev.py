@@ -8,6 +8,8 @@ INSTALLED_APPS += [
     "django_extensions",
 ]
 
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
+ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
 
 try:
     from config.settings.local import *  # noqa: F401
