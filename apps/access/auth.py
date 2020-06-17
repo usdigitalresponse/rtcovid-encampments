@@ -1,7 +1,7 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
-from django.http import HttpResponse
+from django.shortcuts import render
 
 from apps.access.models import InvitedEmail
 
@@ -22,4 +22,4 @@ class InvitedSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def pre_social_login(self, request, sociallogin):
         if not self.is_open_for_signup(request, sociallogin):
-            raise ImmediateHttpResponse(HttpResponse("Unauthorized email address."))
+            raise ImmediateHttpResponse(render(request, "account/signup_closed.html",))
