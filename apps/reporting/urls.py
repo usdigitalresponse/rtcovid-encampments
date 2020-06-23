@@ -1,19 +1,10 @@
-from django.urls import include
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 
 from apps.reporting import views
 
 # Create a router and register our viewsets with it.
 
-router = DefaultRouter()
-router.register(r"visits", views.ReportViewSet)
-router.register(r"organizations", views.OrganizationViewSet)
-router.register(r"encampments", views.EncampmentViewSet)
-
 urlpatterns = [
-    # API
-    path("api/", include(router.urls)),
     # Encampments
     path("", views.EncampmentListView.as_view(), name="encampment-list"),
     path(
@@ -37,4 +28,5 @@ urlpatterns = [
     path("tasks/<str:pk>/complete", views.CompleteTask.as_view(), name="task-complete"),
     # Visits
     path("visits/", views.ScheduleVisitCreateView.as_view(), name="visit-create"),
+    path("visits/cal.ics", views.ScheduledVisitEventFeed()),
 ]

@@ -12,3 +12,4 @@ django-allauth==0.42.0
 django-stronghold>=0.4.0,<0.5
 django-inline-svg>=0.1.1,<0.2
 humanize>=2.4.0,<2.5
+django-ical>=1.7.1,<1.8

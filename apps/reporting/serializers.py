@@ -30,7 +30,7 @@ class ReportSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
-        fields = ["name"]
+        fields = ["name", "id"]
 
 
 class EncampmentSerializer(serializers.ModelSerializer):
