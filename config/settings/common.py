@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.gis",
     "django.contrib.sites",
     "apps.reporting",
+    "apps.access",
     "rest_framework",
     "django_filters",
     "django_tables2",
@@ -136,7 +137,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-ACCOUNT_ADAPTER = "config.auth.ClosedAccountAdapter"  # Don't allow signups
+ACCOUNT_ADAPTER = "apps.access.auth.ClosedAccountAdapter"  # Don't allow local signups
+SOCIALACCOUNT_ADAPTER = (
+    "apps.access.auth.InvitedSocialAccountAdapter"  # Allow invited social signups
+)
+ACCOUNT_USERNAME_REQUIRED = False  # Use emails as usernames
 ACCOUNT_SESSION_REMEMBER = True  # Allow users to stay logged in
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Don't require email verification
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # log in with either username or email
